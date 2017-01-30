@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Test {
+public class Main {
 	Map<State, Integer> record = new HashMap<State, Integer>();
 	
 	public static void main (String[] args){
@@ -27,7 +27,7 @@ public class Test {
 			if (record.containsKey(s)){
 				if (record.get(s) > s.totalCost){
 					//replace
-					record.put(s, value)
+					
 					
 					
 				}else{
@@ -36,13 +36,10 @@ public class Test {
 			
 			}else{
 				node.addChild(new Node<State>(s));
-				record.put(node.data, node.data.totalCost,);
+				record.put(node.data, node.data.totalCost);
 			}
 			
 		}
 	}
-	
-	public void populate(){
-		
-	}
+
 }

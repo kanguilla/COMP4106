@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class State{
 	ArrayList<Integer> entitiesR = new ArrayList<Integer>();
@@ -22,13 +23,12 @@ public class State{
 		return (side == 1) ? entitiesR.remove(i) : entitiesL.remove(i);
 	}
 	
-	public int fingerprint(){
-		return
-	}
 	
 	@Override
 	public boolean equals(Object other) {
+		Collections.sort(entitiesR);
+		Collections.sort(((State)other).entitiesR);
 		
-		
+		return this.entitiesR.equals(((State)other).entitiesR);
 	}
 }
