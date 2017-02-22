@@ -49,9 +49,7 @@ public abstract class Executor {
 			
 			if (n.data.equals(goal)){
 				
-				solutions++;
-				//output("SOLUTION #" + solutions + " $" + n.data.totalCost + " (" + c + ") SKIPPED=" + v);
-				
+				solutions++;		
 				if (n.data.totalCost < optimal){
 					optimal = n.data.totalCost;
 					end = n;
