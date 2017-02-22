@@ -71,11 +71,11 @@ public class State{
 	}
 
 	public boolean addEntity(Integer i, int side){
-		return (side == 1) ? entitiesR.add(i) : entitiesL.add(i);
+		return (side == 0) ? entitiesR.add(i) : entitiesL.add(i);
 	}
 	
 	public boolean removeEntity(Integer i, int side){
-		return (side == 1) ? entitiesR.remove(i) : entitiesL.remove(i);
+		return (side == 0) ? entitiesR.remove(i) : entitiesL.remove(i);
 	}
 	
 	
@@ -99,9 +99,9 @@ public class State{
 	@Override
 	public String toString(){
 		String out = "(";
-		for (Integer i : entitiesL) out += (", " + i);
-		out += ") - ( ";
-		for (Integer i : entitiesR) out += (", " + i);
+		for (int i = 0; i < entitiesL.size(); i++) out += (((i>0)?", ":"")+ entitiesL.get(i));
+		out += ") - (";
+		for (int i = 0; i < entitiesR.size(); i++) out += (((i>0)?", ":"") + entitiesR.get(i));
 		return out + ")";
 	}
 }

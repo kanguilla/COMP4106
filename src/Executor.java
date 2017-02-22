@@ -19,7 +19,6 @@ public abstract class Executor {
 	}
 	
 	public void execute(){
-		//0 = left, 1 = right	
 		
 		if (goal == null || base == null){
 			output("ERROR - NO STATES DEFINED");
@@ -67,16 +66,23 @@ public abstract class Executor {
 			
 			record.put(n.data, n.data.totalCost);
 		}
-		
-		output(end.data.toString());
-		output("** DONE **");
-		output("End cost:       |"+end.data.totalCost);
-		output("Total examined: |"+c);
-		output("Total skipped:  |"+v);
-		output("Total solutions:|"+solutions);
-		while (end != null){
-			output(end.data.history);
-			end = end.parent;
+		if (end != null){
+			output(end.data.toString());
+			output("** COMPLETE **");
+			output("End cost:       |"+end.data.totalCost);
+			output("Total examined: |"+c);
+			output("Total skipped:  |"+v);
+			output("Total solutions:|"+solutions);
+			while (end != null){
+				output(end.data.history);
+				end = end.parent;
+			}
+		}else{
+			output(goal.toString());
+			output("** INCOMPLETE **");
+			output("No solutions found.");
+			output("Total examined: |"+c);
+			output("Total skipped:  |"+v);
 		}
 	}
 }
