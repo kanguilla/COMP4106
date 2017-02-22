@@ -1,9 +1,8 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Executor {
-	public abstract Node<State> selectNode(ArrayList<Heuristic> h);
+	public abstract Node<State> selectNode();
 	public abstract void output(String s);
 	public abstract void handleChild(Node<State> n);
 	public abstract String introduce();
@@ -14,14 +13,14 @@ public abstract class Executor {
 	State goal, base;
 	Map<State, Integer> record = new HashMap<State, Integer>();
 	
-	private ArrayList<Heuristic> heuristics = new ArrayList<Heuristic>();
 	private int desiredSolutions = Integer.MAX_VALUE;
 	private int maxAttempts = Integer.MAX_VALUE;
-	private int maxDistance = Integer.MAX_VALUE;
-	private boolean relax = false;
-
-	protected void setRelax(boolean b){
-		relax = b;
+	private int maxDifference = Integer.MAX_VALUE;
+	private int maxRelax = 0;
+	int relaxCount = 0;
+	
+	protected void setRelax(int i){
+		maxRelax = i;
 	}
 	
 	protected void setSolutionCount(int i){
@@ -32,8 +31,8 @@ public abstract class Executor {
 		maxAttempts = i;
 	}
 	
-	protected void setMaxDistance(int i){
-		maxDistance = i;
+	protected void setMaxDIfference(int i){
+		maxDifference = i;
 	}
 	
 	protected void setBase(State s){
@@ -44,7 +43,6 @@ public abstract class Executor {
 	}
 	
 	public void execute(){
-		
 		if (goal == null || base == null){
 			output("ERROR - NO STATES DEFINED OR UNREACHABLE STATES");
 			return;
@@ -54,15 +52,16 @@ public abstract class Executor {
 		}else{
 			output("** EXECUTION STARTED **.\n" + introduce() + "\n");
 		}
-		
-		Node<State> root = new Node<State>(base, null);
-
-		nodeAdd(root);
-		
-		int optimal = Integer.MAX_VALUE;
-		Node<State> end = null;
-		
 		output(base.toString());
+		executeBody();
+	}
+	
+	public void executeBody(){
+
+		Node<State> root = new Node<State>(base, null);
+		nodeAdd(root);
+		int optimal = Integer.MAX_VALUE;
+		Node<State> end = null;	
 		
 		int c = 0;
 		int v = 0;
@@ -70,7 +69,7 @@ public abstract class Executor {
 		
 		while (!nodesEmpty() && c < maxAttempts){
 			
-			Node<State> n = selectNode(heuristics);
+			Node<State> n = selectNode();
 			
 			if (n.data.equals(goal)){
 				
@@ -90,7 +89,7 @@ public abstract class Executor {
 					v++;
 					continue;
 				}
-				if (n.data.difference(goal) > maxDistance){
+				if (n.data.difference(goal) > maxDifference){
 					v++;
 					continue;
 				}
@@ -103,27 +102,28 @@ public abstract class Executor {
 			c++;
 		}
 		
-		if ((end == null) && relax){
-			output("No solution found. Relaxing to " + maxDistance + "...");
+		if ((end == null) && relaxCount < maxRelax){
+			relaxCount++;
+			output("No solution found. Relaxing to " + (maxDifference + 1) +"...");
 			record = new HashMap<State, Integer>();
 			reset();
-			setMaxDistance(maxDistance + 1);
-			execute();
+			setMaxDIfference(maxDifference + 1);
+			executeBody();
 			return;
 		}
 		
-		
 		output(goal.toString());
 		output((end != null) ? "** COMPLETE **" : "** INCOMPLETE **");
-		output("Desired Solutions|"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "MAX"));
-		output("Maximum Nodes    |"+((maxAttempts < Integer.MAX_VALUE) ? maxAttempts : "MAX"));
-		output("Maximum Distance |"+((maxDistance < Integer.MAX_VALUE) ? maxDistance : "MAX"));
-		output("Total examined:  |"+c);
-		output("Total skipped:   |"+v);
+		output("Desired Solutions  |"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "MAX"));
+		output("Maximum Nodes      |"+((maxAttempts < Integer.MAX_VALUE) ? maxAttempts : "MAX"));
+		output("Maximum Difference |"+((maxDifference < Integer.MAX_VALUE) ? maxDifference : "MAX"));
+		output("Maximum Relax      |"+((maxRelax > 0) ? (maxDifference + " times"): "N/A"));
+		output("Total examined:    |"+c);
+		output("Total skipped:     |"+v);
 		
 		if (end != null){
-			output("End cost:        |"+end.data.totalCost);
-			output("Total solutions: |"+solutions);
+			output("End cost:          |"+end.data.totalCost);
+			output("Total solutions:   |"+solutions);
 			while (end != null){
 				output(end.data.history);
 				end = end.parent;

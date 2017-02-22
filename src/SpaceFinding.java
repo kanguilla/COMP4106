@@ -2,7 +2,7 @@
 public class SpaceFinding {
 	public static void main (String[] args){
 		
-		Executor ex = new BFSExecutor();
+		Executor ex = new AstarExecutor();
 		
 		TileState base = new TileState(0, 0);
 		base.addTile("1", 0, 0);
@@ -28,8 +28,8 @@ public class SpaceFinding {
 		
 		ex.setBase(base);
 		ex.setGoal(goal);
-		ex.setMaxDistance(5);
-		ex.setRelax(true);
+		//ex.setMaxDIfference(0);
+		//ex.setRelax(20);
 		
 		ex.setMaxAttempts(5000);
 		ex.setSolutionCount(1);

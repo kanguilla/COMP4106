@@ -4,16 +4,43 @@ import java.util.PriorityQueue;
 
 public class AstarExecutor extends Executor {
 	
-	PriorityQueue<Node<State>> nodeList = new PriorityQueue<Node<State>>(1, new Comparator<Node<State>>(){
-		@Override
-		public int compare(Node<State> o1, Node<State> o2) {
-			return o1.data.totalCost - o2.data.totalCost;
-		}
-	});
+	private ArrayList<Heuristic> heuristics = new ArrayList<Heuristic>();
 	
+	Comparator<Node<State>> comparator = new Comparator<Node<State>>(){
+		@Override
+		public int compare(Node<State> s1, Node<State> s2) {
+			if (heuristics.isEmpty()){
+				return s1.data.totalCost - s2.data.totalCost;
+			}
+			
+			double avg1 = 0;
+			for (Heuristic h : heuristics){
+				avg1 = avg1 + h.eval(s1.data, goal);
+			}
+			avg1 = avg1/heuristics.size();
+			
+			double avg2 = 0;
+			for (Heuristic h : heuristics){
+				avg2 = avg2 + h.eval(s2.data, goal);
+			}
+			avg2 = avg2/heuristics.size();
+			
+			return (int) (avg1 - avg2);
+		}
+	};
+	
+	PriorityQueue<Node<State>> nodeList = new PriorityQueue<Node<State>>(1, comparator);
+	
+	public void addHeuristic(Heuristic h){
+		heuristics.add(h);
+	}
+	
+	public void clearHeuristics(){
+		heuristics.clear();
+	}
 	
 	@Override
-	public Node<State> selectNode(ArrayList<Heuristic> h) {
+	public Node<State> selectNode() {
 		
 		return nodeList.poll();
 	}
@@ -45,11 +72,6 @@ public class AstarExecutor extends Executor {
 
 	@Override
 	public void reset() {
-		nodeList = new PriorityQueue<Node<State>>(1, new Comparator<Node<State>>(){
-			@Override
-			public int compare(Node<State> o1, Node<State> o2) {
-				return o1.data.totalCost - o2.data.totalCost;
-			}
-		});
+		nodeList = new PriorityQueue<Node<State>>(1, comparator);
 	}
 }
