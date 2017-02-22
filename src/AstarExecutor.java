@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -12,7 +13,7 @@ public class AstarExecutor extends Executor {
 	
 	
 	@Override
-	public Node<State> selectNode() {
+	public Node<State> selectNode(ArrayList<Heuristic> h) {
 		
 		return nodeList.poll();
 	}

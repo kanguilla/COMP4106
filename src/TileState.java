@@ -32,8 +32,8 @@ public class TileState extends State{
 			//find blank spaces for rule #1
 			if (e.getValue() == nullRegex){
 				//find adjacent spaces
-				for (int i = -1; i<=1; i++){
-					for (int j = -1; j<=1; j++){
+				for (int j = -1; j<=1; j++){
+					for (int i = -1; i<=1; i++){
 						if (i != 0 || j != 0){
 							String neighbour = nodeMap.get(new Pair(x + i, y + j));
 							if (neighbour != null && neighbour != nullRegex){
@@ -41,10 +41,10 @@ public class TileState extends State{
 								//swap values
 								
 								TileState ns = new TileState(this.depth+1, d++);
+								ns.history = "SWAP - " + neighbour + "("+y+","+x+") with blank("+(y+j)+","+(x+i)+")";
 								ns.nodeMap = new HashMap<Pair, String>(this.nodeMap);
 								ns.nodeMap.put(new Pair(x, y), neighbour);
-								ns.nodeMap.put(new Pair(x + i, y + j), null);
-								ns.history = "SWAP - blank("+x+","+y+") with " + neighbour + "("+(x+i)+","+(y+j)+")";
+								ns.nodeMap.put(new Pair(x + i, y + j), nullRegex);
 								
 								out.add(ns);
 							}
@@ -60,10 +60,10 @@ public class TileState extends State{
 							String neighbour = nodeMap.get(new Pair(x + i, y + j));
 							if (neighbour != null && neighbour != nullRegex){
 								TileState ns = new TileState(this.depth+1, d++);
+								ns.history = "VAULT - "+e.getValue()+"("+y+","+x+") with " + neighbour + "("+(y+j)+","+(x+i)+")";
 								ns.nodeMap = new HashMap<Pair, String>(this.nodeMap);
 								ns.nodeMap.put(new Pair(x, y), neighbour);
 								ns.nodeMap.put(new Pair(x + i, y + j), e.getValue());
-								ns.history = "VAULT - "+e.getValue()+"("+x+","+y+") with " + neighbour + "("+(x+i)+","+(y+j)+")";
 								
 								out.add(ns);
 							}
@@ -117,10 +117,8 @@ public class TileState extends State{
 	@Override
 	public int difference(State other) {
 		
-		ArrayList<String> totalInput1 = new ArrayList<String>();
-		ArrayList<String> totalInput2 = new ArrayList<String>();
-		totalInput1.addAll(this.nodeMap.values());
-		totalInput2.addAll(((TileState)other).nodeMap.values());
+		ArrayList<String> totalInput1 = new ArrayList<String>(this.nodeMap.values());
+		ArrayList<String> totalInput2 = new ArrayList<String>(((TileState)other).nodeMap.values());
 		
 		Collections.sort(totalInput1);
 		Collections.sort(totalInput2);

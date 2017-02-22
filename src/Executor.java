@@ -1,8 +1,9 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Executor {
-	public abstract Node<State> selectNode();
+	public abstract Node<State> selectNode(ArrayList<Heuristic> h);
 	public abstract void output(String s);
 	public abstract void handleChild(Node<State> n);
 	public abstract String introduce();
@@ -12,11 +13,29 @@ public abstract class Executor {
 	State goal, base;
 	Map<State, Integer> record = new HashMap<State, Integer>();
 	
-	int desiredSolutions = Integer.MAX_VALUE;
-	int maxNodes = Integer.MAX_VALUE;
+	private ArrayList<Heuristic> heuristics = new ArrayList<Heuristic>();
+	private int desiredSolutions = Integer.MAX_VALUE;
+	private int maxAttempts = Integer.MAX_VALUE;
+	private int maxDistance = Integer.MAX_VALUE;
+	private boolean relax = false;
+	private void relax(){
+		maxDistance++;
+	}
+	
+	protected void setRelax(boolean b){
+		relax = b;
+	}
 	
 	protected void setSolutionCount(int i){
 		desiredSolutions = i;
+	}
+	
+	protected void setMaxAttempts(int i){
+		maxAttempts = i;
+	}
+	
+	protected void setMaxDistance(int i){
+		maxDistance = i;
 	}
 	
 	protected void setBase(State s){
@@ -24,12 +43,6 @@ public abstract class Executor {
 	}
 	protected void setGoal(State s){
 		this.goal = s;
-	}
-	
-	public void execute(int solutions, int attempts){
-		desiredSolutions = solutions;
-		maxNodes = attempts;
-		execute();
 	}
 	
 	public void execute(){
@@ -57,11 +70,9 @@ public abstract class Executor {
 		int v = 0;
 		int solutions = 0;
 		
-		while (!nodesEmpty() && c < maxNodes){
+		while (!nodesEmpty() && c < maxAttempts){
 			
-			Node<State> n = selectNode();
-			
-			c++;
+			Node<State> n = selectNode(heuristics);
 			
 			if (n.data.equals(goal)){
 				
@@ -77,20 +88,36 @@ public abstract class Executor {
 			}
 			
 			for (State s : n.data.expand()){
-				if (!record.containsKey(n.data)){
-					Node<State> child = new Node<State>(s, n);
-					handleChild(child);
-				}else{
+				if (record.containsKey(n.data)){
 					v++;
+					continue;
 				}
+				if (n.data.difference(goal) > maxDistance){
+					v++;
+					continue;
+				}
+				Node<State> child = new Node<State>(s, n);
+				handleChild(child);
 			}
 			
 			record.put(n.data, n.data.totalCost);
+			
+			c++;
 		}
+		
+		if (end != null && relax){
+			relax();
+			output("No solution found. Relaxing...");
+			this.execute();
+			return;
+		}
+		
+		
 		output(goal.toString());
 		output((end != null) ? "** COMPLETE **" : "** INCOMPLETE **");
 		output("Desired Solutions|"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "MAX"));
-		output("Maximum Nodes    |"+((maxNodes < Integer.MAX_VALUE) ? maxNodes : "MAX"));
+		output("Maximum Nodes    |"+((maxAttempts < Integer.MAX_VALUE) ? maxAttempts : "MAX"));
+		output("Maximum Distance |"+((maxDistance < Integer.MAX_VALUE) ? maxDistance : "MAX"));
 		output("Total examined:  |"+c);
 		output("Total skipped:   |"+v);
 		

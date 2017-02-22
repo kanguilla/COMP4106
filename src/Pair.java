@@ -20,6 +20,6 @@ public class Pair {
     }
 
 	public int difference(Pair key) {
-		return Math.abs(key.x - x) + Math.abs(key.y - y);
+		return (int) Math.hypot(Math.abs(key.x - x),  Math.abs(key.y - y));
 	}
 }

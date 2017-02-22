@@ -1,11 +1,12 @@
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 public class DFSExecutor extends Executor {
 	
 	ArrayDeque<Node<State>> nodeList = new ArrayDeque<Node<State>>();
 	
 	@Override
-	public Node<State> selectNode() {
+	public Node<State> selectNode(ArrayList<Heuristic> h) {
 		return nodeList.pop();
 	}
 
