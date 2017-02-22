@@ -1,4 +1,3 @@
-import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,9 +6,10 @@ public abstract class Executor {
 	public abstract void output(String s);
 	public abstract void handleChild(Node<State> n);
 	public abstract String introduce();
+	public abstract void nodeAdd(Node<State> n);
+	public abstract boolean nodesEmpty();
 	
 	State goal, base;
-	ArrayDeque<Node<State>> nodeList = new ArrayDeque<Node<State>>();
 	Map<State, Integer> record = new HashMap<State, Integer>();
 	
 	protected void setBase(State s){
@@ -30,7 +30,7 @@ public abstract class Executor {
 		
 		Node<State> root = new Node<State>(base, null);
 
-		nodeList.add(root);
+		nodeAdd(root);
 		
 		int optimal = Integer.MAX_VALUE;
 		Node<State> end = null;
@@ -41,7 +41,7 @@ public abstract class Executor {
 		int v = 0;
 		int solutions = 0;
 		
-		while (!nodeList.isEmpty()){
+		while (!nodesEmpty()){
 
 			Node<State> n = selectNode();
 			
