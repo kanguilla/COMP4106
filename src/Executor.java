@@ -10,14 +10,14 @@ public abstract class Executor {
 	public abstract boolean nodesEmpty();
 	public abstract void reset();
 	
-	State goal, base;
-	Map<State, Integer> record = new HashMap<State, Integer>();
+	protected State goal, base;
+	private Map<State, Integer> record = new HashMap<State, Integer>();
 	
 	private int desiredSolutions = Integer.MAX_VALUE;
 	private int maxAttempts = Integer.MAX_VALUE;
 	private int maxDifference = Integer.MAX_VALUE;
 	private int maxRelax = 0;
-	int relaxCount = 0;
+	private int relaxCount = 0;
 	
 	protected void setRelax(int i){
 		maxRelax = i;
@@ -113,6 +113,7 @@ public abstract class Executor {
 		}
 		
 		output(goal.toString());
+		output("");
 		output((end != null) ? "** COMPLETE **" : "** INCOMPLETE **");
 		output("Desired Solutions  |"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "MAX"));
 		output("Maximum Nodes      |"+((maxAttempts < Integer.MAX_VALUE) ? maxAttempts : "MAX"));
@@ -124,6 +125,7 @@ public abstract class Executor {
 		if (end != null){
 			output("End cost:          |"+end.data.totalCost);
 			output("Total solutions:   |"+solutions);
+			output("\nHISTORY");
 			while (end != null){
 				output(end.data.history);
 				end = end.parent;

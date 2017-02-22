@@ -4,6 +4,8 @@ public class BridgeCrossing {
 		
 		Executor ex = new AstarExecutor();
 
+		((AstarExecutor) ex).addHeuristic(new DistanceHeuristic());
+		
 		BridgeState base = new BridgeState(0, 0);
 		base.addEntity(1, 1);
 		base.addEntity(3, 1);
