@@ -9,6 +9,7 @@ public abstract class Executor {
 	public abstract String introduce();
 	public abstract void nodeAdd(Node<State> n);
 	public abstract boolean nodesEmpty();
+	public abstract void reset();
 	
 	State goal, base;
 	Map<State, Integer> record = new HashMap<State, Integer>();
@@ -104,14 +105,10 @@ public abstract class Executor {
 		
 		if ((end == null) && relax){
 			output("No solution found. Relaxing to " + maxDistance + "...");
-			Executor ex = new DFSExecutor();
-			ex.setRelax(true);
-			ex.setMaxAttempts(maxAttempts);
-			ex.setMaxDistance(++maxDistance);
-			ex.setSolutionCount(desiredSolutions);
-			ex.base = this.base;
-			ex.goal = this.goal;
-			ex.execute();
+			record = new HashMap<State, Integer>();
+			reset();
+			setMaxDistance(maxDistance + 1);
+			execute();
 			return;
 		}
 		

@@ -34,4 +34,9 @@ public class BFSExecutor extends Executor {
 	public boolean nodesEmpty() {
 		return nodeList.isEmpty();
 	}
+	
+	@Override
+	public void reset() {
+		nodeList = new ArrayDeque<Node<State>>();
+	}
 }

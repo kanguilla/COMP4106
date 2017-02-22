@@ -2,7 +2,7 @@
 public class SpaceFinding {
 	public static void main (String[] args){
 		
-		Executor ex = new DFSExecutor();
+		Executor ex = new BFSExecutor();
 		
 		TileState base = new TileState(0, 0);
 		base.addTile("1", 0, 0);

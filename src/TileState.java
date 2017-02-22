@@ -45,6 +45,7 @@ public class TileState extends State{
 								ns.nodeMap = new HashMap<Pair, String>(this.nodeMap);
 								ns.nodeMap.put(new Pair(x, y), neighbour);
 								ns.nodeMap.put(new Pair(x + i, y + j), nullRegex);
+								ns.totalCost = totalCost + 1;
 								
 								out.add(ns);
 							}
@@ -64,6 +65,7 @@ public class TileState extends State{
 								ns.nodeMap = new HashMap<Pair, String>(this.nodeMap);
 								ns.nodeMap.put(new Pair(x, y), neighbour);
 								ns.nodeMap.put(new Pair(x + i, y + j), e.getValue());
+								ns.totalCost = totalCost + 1;
 								
 								out.add(ns);
 							}

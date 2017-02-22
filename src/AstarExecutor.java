@@ -42,4 +42,14 @@ public class AstarExecutor extends Executor {
 	public boolean nodesEmpty() {
 		return nodeList.isEmpty();
 	}
+
+	@Override
+	public void reset() {
+		nodeList = new PriorityQueue<Node<State>>(1, new Comparator<Node<State>>(){
+			@Override
+			public int compare(Node<State> o1, Node<State> o2) {
+				return o1.data.totalCost - o2.data.totalCost;
+			}
+		});
+	}
 }
