@@ -18,10 +18,7 @@ public abstract class Executor {
 	private int maxAttempts = Integer.MAX_VALUE;
 	private int maxDistance = Integer.MAX_VALUE;
 	private boolean relax = false;
-	private void relax(){
-		maxDistance++;
-	}
-	
+
 	protected void setRelax(boolean b){
 		relax = b;
 	}
@@ -105,10 +102,16 @@ public abstract class Executor {
 			c++;
 		}
 		
-		if (end != null && relax){
-			relax();
-			output("No solution found. Relaxing...");
-			this.execute();
+		if ((end == null) && relax){
+			output("No solution found. Relaxing to " + maxDistance + "...");
+			Executor ex = new DFSExecutor();
+			ex.setRelax(true);
+			ex.setMaxAttempts(maxAttempts);
+			ex.setMaxDistance(++maxDistance);
+			ex.setSolutionCount(desiredSolutions);
+			ex.base = this.base;
+			ex.goal = this.goal;
+			ex.execute();
 			return;
 		}
 		
