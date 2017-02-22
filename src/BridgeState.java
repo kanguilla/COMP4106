@@ -93,4 +93,34 @@ public class BridgeState extends State{
 		for (int i = 0; i < entitiesR.size(); i++) out += (((i>0)?", ":"") + entitiesR.get(i));
 		return out + ")";
 	}
+
+	@Override
+	public int difference(State other) {
+		
+		ArrayList<Integer> totalInput = new ArrayList<Integer>();
+		totalInput.addAll(this.entitiesL);
+		totalInput.addAll(this.entitiesR);
+		totalInput.addAll(((BridgeState)other).entitiesL);
+		totalInput.addAll(((BridgeState)other).entitiesR);
+		
+		for (Integer i : totalInput){
+			if(!(Collections.frequency(totalInput, i)%2 == 0)){
+				return -1;
+			}
+		}
+		
+		int difference = 0;
+		for (Integer i : this.entitiesL){
+			if (!((BridgeState)other).entitiesL.contains(i)){
+				difference++;
+			}
+		}
+		for (Integer i : this.entitiesR){
+			if (!((BridgeState)other).entitiesR.contains(i)){
+				difference++;
+			}
+		}
+		
+		return difference;
+	}
 }

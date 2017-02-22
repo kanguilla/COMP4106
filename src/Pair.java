@@ -18,4 +18,8 @@ public class Pair {
         result = 31 * result + x + y;
         return result;
     }
+
+	public int difference(Pair key) {
+		return Math.abs(key.x - x) + Math.abs(key.y - y);
+	}
 }

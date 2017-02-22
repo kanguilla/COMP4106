@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -111,6 +112,35 @@ public class TileState extends State{
 			if (i < maxX)System.out.println();
 		}
 		return "";
+	}
+
+	@Override
+	public int difference(State other) {
+		
+		ArrayList<String> totalInput1 = new ArrayList<String>();
+		ArrayList<String> totalInput2 = new ArrayList<String>();
+		totalInput1.addAll(this.nodeMap.values());
+		totalInput2.addAll(((TileState)other).nodeMap.values());
+		
+		Collections.sort(totalInput1);
+		Collections.sort(totalInput2);
+		
+		if (!totalInput1.equals(totalInput2)){
+			return -1;
+		}
+		
+		
+		int difference = 0;
+		
+		for (Entry<Pair, String> e1 : this.nodeMap.entrySet()){
+			for (Entry<Pair, String> e2 : ((TileState)other).nodeMap.entrySet()){
+				if (e1.getValue().equals(e2.getValue())){
+					difference += e1.getKey().difference(e2.getKey());
+				}
+			}
+		}
+		
+		return difference;
 	}
 
 }

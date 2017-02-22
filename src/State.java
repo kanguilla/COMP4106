@@ -12,6 +12,7 @@ public abstract class State {
 		this.distance = distance;
 	}
 	
+	public abstract int difference(State other);
 	public abstract ArrayList<State> expand();
 	@Override
 	public abstract boolean equals(Object other);

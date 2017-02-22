@@ -35,7 +35,10 @@ public abstract class Executor {
 	public void execute(){
 		
 		if (goal == null || base == null){
-			output("ERROR - NO STATES DEFINED");
+			output("ERROR - NO STATES DEFINED OR UNREACHABLE STATES");
+			return;
+		}else if (base.difference(goal) < 0){
+			output("ERROR - UNREACHABLE STATE");
 			return;
 		}else{
 			output("** EXECUTION STARTED **.\n" + introduce() + "\n");

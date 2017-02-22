@@ -1,9 +1,7 @@
 
-public class SpaceFinding {
-	public static void main (String[] args){
-		
-		Executor ex = new DFSExecutor();
-		
+public class Test {
+
+	public static void main(String[] args) {
 		TileState base = new TileState(0, 0);
 		base.addTile("1", 0, 0);
 		base.addTile("2", 0, 1);
@@ -22,14 +20,12 @@ public class SpaceFinding {
 		goal.addTile("4", 1, 0);
 		goal.addTile(" ", 1, 1);
 		goal.addTile("6", 1, 2);
-		goal.addTile("7", 2, 0);
+		goal.addTile("9", 2, 0);
 		goal.addTile("8", 2, 1);
-		goal.addTile("9", 2, 2);
+		goal.addTile("7", 2, 2);
 		
-		ex.setBase(base);
-		ex.setGoal(goal);
+		System.out.println(base.difference(goal));
 
-		ex.execute(1, 5000);
-		
 	}
+
 }
