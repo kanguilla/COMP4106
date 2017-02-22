@@ -2,9 +2,9 @@
 public class BridgeCrossing {
 	public static void main (String[] args){
 		
-		Executor ex = new AstarExecutor();
-
-		((AstarExecutor) ex).addHeuristic(new DistanceHeuristic());
+		AstarExecutor ex = new AstarExecutor();
+		//ex.addHeuristic(new CountingHeuristic());
+		ex.addHeuristic(new DistanceHeuristic());
 		
 		BridgeState base = new BridgeState(0, 0);
 		base.addEntity(1, 1);

@@ -4,7 +4,7 @@ public class SpaceFinding {
 		
 		AstarExecutor ex = new AstarExecutor();
 		ex.addHeuristic(new CountingHeuristic());
-		
+		ex.addHeuristic(new DistanceHeuristic());
 		TileState base = new TileState(0, 0);
 		base.addTile("1", 0, 0);
 		base.addTile("2", 0, 1);
