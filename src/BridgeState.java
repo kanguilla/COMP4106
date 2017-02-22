@@ -1,15 +1,14 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class RiverState extends State{
+public class BridgeState extends State{
 	ArrayList<Integer> entitiesR = new ArrayList<Integer>();
 	ArrayList<Integer> entitiesL = new ArrayList<Integer>();
 	
 	int reqMove = 1; //1 forward (move right), -1 backward (move right)
 	
-	public RiverState(int depth, int distance){
-		this.depth = depth;
-		this.distance = distance;
+	public BridgeState(int depth, int distance){
+		super(depth, distance);
 	}
 	
 	public ArrayList<State> expand(){
@@ -22,7 +21,7 @@ public class RiverState extends State{
 			for (int i=0; i < entitiesL.size()-1; i++){
 				for (int j=i+1; j < entitiesL.size(); j++){
 					
-					RiverState ns = new RiverState(this.depth+1, d++);
+					BridgeState ns = new BridgeState(this.depth+1, d++);
 					ns.entitiesL = new ArrayList<Integer>(this.entitiesL);
 					ns.entitiesR = new ArrayList<Integer>(this.entitiesR);
 					
@@ -45,7 +44,7 @@ public class RiverState extends State{
 
 			for (int i=0; i < entitiesR.size(); i++){
 
-				RiverState ns = new RiverState(this.depth+1, d++);
+				BridgeState ns = new BridgeState(this.depth+1, d++);
 				ns.entitiesL = new ArrayList<Integer>(this.entitiesL);
 				ns.entitiesR = new ArrayList<Integer>(this.entitiesR);
 
@@ -73,14 +72,12 @@ public class RiverState extends State{
 	}
 	
 	
-	@Override
 	public boolean equals(Object other) {
 		Collections.sort(entitiesR);
-		Collections.sort(((RiverState)other).entitiesR);
-		
-		return this.entitiesR.equals(((RiverState)other).entitiesR);
+		Collections.sort(((BridgeState)other).entitiesR);
+		return this.entitiesR.equals(((BridgeState)other).entitiesR);
 	}
-	@Override
+
 	public int hashCode() {
         int result = 17;
         result = 31 * result + entitiesR.hashCode();
@@ -90,7 +87,6 @@ public class RiverState extends State{
         return result;
     }
 	
-	@Override
 	public String toString(){
 		String out = "(";
 		for (int i = 0; i < entitiesL.size(); i++) out += (((i>0)?", ":"")+ entitiesL.get(i));

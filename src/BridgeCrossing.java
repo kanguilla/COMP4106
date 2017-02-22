@@ -4,14 +4,14 @@ public class BridgeCrossing {
 		
 		Executor ex = new BFSExecutor();
 		
-		RiverState goal = new RiverState(0, 0);
+		BridgeState goal = new BridgeState(0, 0);
 		goal.addEntity(1, 0);
 		goal.addEntity(3, 0);
 		goal.addEntity(5, 0);
 		goal.addEntity(8, 0);
 		goal.addEntity(13, 0);
 		
-		RiverState base = new RiverState(0, 0);
+		BridgeState base = new BridgeState(0, 0);
 		base.addEntity(1, 1);
 		base.addEntity(3, 1);
 		base.addEntity(5, 1);
