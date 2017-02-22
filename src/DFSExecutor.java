@@ -14,4 +14,9 @@ public class DFSExecutor extends Executor {
 	public void handleChild(Node<State> child){
 		nodeList.addFirst(child);
 	}
+
+	@Override
+	public String introduce() {
+		return "Depth-First Search";
+	}
 }

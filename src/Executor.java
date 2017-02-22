@@ -6,6 +6,7 @@ public abstract class Executor {
 	public abstract Node<State> selectNode();
 	public abstract void output(String s);
 	public abstract void handleChild(Node<State> n);
+	public abstract String introduce();
 	
 	State goal, base;
 	ArrayDeque<Node<State>> nodeList = new ArrayDeque<Node<State>>();
@@ -23,6 +24,8 @@ public abstract class Executor {
 		if (goal == null || base == null){
 			output("ERROR - NO STATES DEFINED");
 			return;
+		}else{
+			output("** EXECUTION STARTED **.\n" + introduce() + "\n");
 		}
 		
 		Node<State> root = new Node<State>(base, null);

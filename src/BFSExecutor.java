@@ -14,4 +14,9 @@ public class BFSExecutor extends Executor {
 	public void handleChild(Node<State> child){
 		nodeList.addLast(child);
 	}
+
+	@Override
+	public String introduce() {
+		return "Breadth-First Search";
+	}
 }
