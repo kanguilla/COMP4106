@@ -8,20 +8,33 @@ public class State{
 	int reqMove = 1; //1 forward (move right), -1 backward (move right)
 	int totalCost = 0;
 	
+	int depth;
+	int distance;
+	
+	String history = "";
+	
+	public State(int depth, int distance){
+		this.depth = depth;
+		this.distance = distance;
+	}
+	
 	public ArrayList<State> expand(){
 		ArrayList<State> out = new ArrayList<State>();
+		
+		int d = 0;
+		
 		
 		if (reqMove == 1){
 			for (int i=0; i < entitiesL.size()-1; i++){
 				for (int j=i+1; j < entitiesL.size(); j++){
-					//System.out.println(entitiesL.get(i) + " and " + entitiesL.get(j));
 					
-					State ns = new State();
+					State ns = new State(this.depth+1, d++);
 					ns.entitiesL = new ArrayList<Integer>(this.entitiesL);
 					ns.entitiesR = new ArrayList<Integer>(this.entitiesR);
 					
 					Integer i1 = entitiesL.get(i);
 					Integer i2 = entitiesL.get(j);
+					ns.history = ("-> (" + i1 + "," + i2 + ")");
 					ns.entitiesL.remove(i1);
 					ns.entitiesL.remove(i2);
 					ns.entitiesR.add(i1);
@@ -37,13 +50,13 @@ public class State{
 		if (reqMove == -1){
 
 			for (int i=0; i < entitiesR.size(); i++){
-				//System.out.println(entitiesR.get(i));
 
-				State ns = new State();
+				State ns = new State(this.depth+1, d++);
 				ns.entitiesL = new ArrayList<Integer>(this.entitiesL);
 				ns.entitiesR = new ArrayList<Integer>(this.entitiesR);
 
 				Integer i1 = entitiesR.get(i);
+				ns.history = ("<- (" + i1 + ")");
 				ns.entitiesR.remove(i1);
 				ns.entitiesL.add(i1);
 				ns.totalCost = this.totalCost + i1;
@@ -85,10 +98,10 @@ public class State{
 	
 	@Override
 	public String toString(){
-		String out = "";
+		String out = "(";
 		for (Integer i : entitiesL) out += (", " + i);
-		out += " || ";
+		out += ") - ( ";
 		for (Integer i : entitiesR) out += (", " + i);
-		return out;
+		return out + ")";
 	}
 }
