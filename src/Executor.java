@@ -11,12 +11,22 @@ public abstract class Executor {
 	
 	State goal, base;
 	Map<State, Integer> record = new HashMap<State, Integer>();
+	int desiredSolutions = Integer.MAX_VALUE;
+	
+	protected void setSolutionCount(int i){
+		desiredSolutions = i;
+	}
 	
 	protected void setBase(State s){
 		this.base = s;
 	}
 	protected void setGoal(State s){
 		this.goal = s;
+	}
+	
+	public void execute(int i){
+		desiredSolutions = i;
+		execute();
 	}
 	
 	public void execute(){
@@ -49,10 +59,14 @@ public abstract class Executor {
 			
 			if (n.data.equals(goal)){
 				
-				solutions++;		
+				solutions++;
 				if (n.data.totalCost < optimal){
 					optimal = n.data.totalCost;
 					end = n;
+				}
+				
+				if (solutions >= desiredSolutions){
+					break;
 				}
 			}
 			

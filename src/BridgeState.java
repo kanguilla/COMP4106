@@ -16,7 +16,6 @@ public class BridgeState extends State{
 		
 		int d = 0;
 		
-		
 		if (reqMove == 1){
 			for (int i=0; i < entitiesL.size()-1; i++){
 				for (int j=i+1; j < entitiesL.size(); j++){
