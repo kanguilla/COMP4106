@@ -29,7 +29,7 @@ public class SpaceFinding {
 		ex.setBase(base);
 		ex.setGoal(goal);
 
-		ex.execute(1);
+		ex.execute(1, 10000);
 		
 	}
 }

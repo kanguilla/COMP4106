@@ -11,7 +11,9 @@ public abstract class Executor {
 	
 	State goal, base;
 	Map<State, Integer> record = new HashMap<State, Integer>();
+	
 	int desiredSolutions = Integer.MAX_VALUE;
+	int maxNodes = Integer.MAX_VALUE;
 	
 	protected void setSolutionCount(int i){
 		desiredSolutions = i;
@@ -24,8 +26,9 @@ public abstract class Executor {
 		this.goal = s;
 	}
 	
-	public void execute(int i){
-		desiredSolutions = i;
+	public void execute(int solutions, int attempts){
+		desiredSolutions = solutions;
+		maxNodes = attempts;
 		execute();
 	}
 	
@@ -51,8 +54,8 @@ public abstract class Executor {
 		int v = 0;
 		int solutions = 0;
 		
-		while (!nodesEmpty()){
-
+		while (!nodesEmpty() && c < maxNodes){
+			
 			Node<State> n = selectNode();
 			
 			c++;
@@ -81,23 +84,22 @@ public abstract class Executor {
 			
 			record.put(n.data, n.data.totalCost);
 		}
+		output(goal.toString());
+		output((end != null) ? "** COMPLETE **" : "** INCOMPLETE **");
+		output("Desired Solutions|"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "MAX"));
+		output("Maximum Nodes    |"+((maxNodes < Integer.MAX_VALUE) ? maxNodes : "MAX"));
+		output("Total examined:  |"+c);
+		output("Total skipped:   |"+v);
+		
 		if (end != null){
-			output(end.data.toString());
-			output("** COMPLETE **");
-			output("End cost:       |"+end.data.totalCost);
-			output("Total examined: |"+c);
-			output("Total skipped:  |"+v);
-			output("Total solutions:|"+solutions);
+			output("End cost:        |"+end.data.totalCost);
+			output("Total solutions: |"+solutions);
 			while (end != null){
 				output(end.data.history);
 				end = end.parent;
 			}
-		}else{
-			output(goal.toString());
-			output("** INCOMPLETE **");
+		}else{	
 			output("No solutions found.");
-			output("Total examined: |"+c);
-			output("Total skipped:  |"+v);
 		}
 	}
 }
