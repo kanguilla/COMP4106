@@ -41,7 +41,6 @@ public class AstarExecutor extends Executor {
 	
 	@Override
 	public Node<State> selectNode() {
-		
 		return nodeList.poll();
 	}
 
@@ -78,5 +77,10 @@ public class AstarExecutor extends Executor {
 	@Override
 	public void reset() {
 		nodeList = new PriorityQueue<Node<State>>(1, comparator);
+	}
+	
+	@Override
+	public void clearNodes() {
+		nodeList.clear();
 	}
 }

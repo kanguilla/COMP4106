@@ -5,6 +5,7 @@ public class SpaceFinding {
 		AstarExecutor ex = new AstarExecutor();
 		ex.addHeuristic(new CountingHeuristic());
 		ex.addHeuristic(new DistanceHeuristic());
+		
 		TileState base = new TileState(0, 0);
 		base.addTile("1", 0, 0);
 		base.addTile("2", 0, 1);
@@ -15,6 +16,8 @@ public class SpaceFinding {
 		base.addTile("7", 2, 0);
 		base.addTile("8", 2, 1);
 		base.addTile("9", 2, 2);
+		base.addTile("A", 5, 5);
+		base.addTile("B", 4, 3);
 		
 		TileState goal = new TileState(0, 0);
 		goal.addTile("8", 0, 0);
@@ -26,13 +29,15 @@ public class SpaceFinding {
 		goal.addTile("7", 2, 0);
 		goal.addTile("1", 2, 1);
 		goal.addTile("9", 2, 2);
+		goal.addTile("A", 4, 3);
+		goal.addTile("B", 5, 5);
 		
 		ex.setBase(base);
 		ex.setGoal(goal);
 		//ex.setMaxDIfference(0);
 		//ex.setRelax(20);
 		
-		ex.setMaxAttempts(5000);
+		ex.setMaxExamine(5000);
 		ex.setSolutionCount(1);
 		ex.execute();
 		

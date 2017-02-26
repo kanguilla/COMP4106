@@ -108,7 +108,7 @@ public class TileState extends State{
 					System.out.print("| ");
 				}else{		
 					String value = nodeMap.get(new Pair(i, j));
-					System.out.print(((value == null) ? "  " : (value + " ")));
+					System.out.print(((value == null) ? "- " : (value + " ")));
 				}
 			}
 			if (i < maxX)System.out.println();

@@ -41,3 +41,19 @@ class CountingHeuristic extends Heuristic{
 	
 }
 
+class LowWasteHeuristic extends Heuristic{
+
+	@Override
+	public int eval(State current, State other, State goal) {
+		return ((BridgeState) current).difference + current.totalCost;
+	}
+
+	@Override
+	public String toString() {
+		return "Low Waste (Attempts to minimize the difference in travel times)";
+	}
+	
+}
+
+
+

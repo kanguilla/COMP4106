@@ -38,4 +38,9 @@ public class DFSExecutor extends Executor {
 	public void reset() {
 		nodeList = new ArrayDeque<Node<State>>();
 	}
+	
+	@Override
+	public void clearNodes() {
+		nodeList.clear();
+	}
 }
