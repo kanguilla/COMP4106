@@ -3,7 +3,7 @@ public class BridgeCrossing {
 	public static void main (String[] args){
 		
 		Executor ex = new AstarExecutor();
-		//((AstarExecutor) ex).addHeuristic(new DelayHeuristic());
+		((AstarExecutor) ex).addHeuristic(new DelayHeuristic());
 		
 		BridgeState base = new BridgeState(0, 0);
 		
