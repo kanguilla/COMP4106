@@ -16,7 +16,7 @@ class DistanceHeuristic extends Heuristic{
 
 	@Override
 	public String toString() {
-		return "Distance Heuristic (Uses the states difference formula)";
+		return "Distance Heuristic (Uses the states timeDifference formula)";
 	}
 }
 
@@ -45,12 +45,28 @@ class LowWasteHeuristic extends Heuristic{
 
 	@Override
 	public int eval(State current, State other, State goal) {
-		return ((BridgeState) current).difference + current.totalCost;
+		return ((BridgeState) current).timeDifference + current.totalCost;
 	}
 
 	@Override
 	public String toString() {
-		return "Low Waste (Attempts to minimize the difference in travel times)";
+		return "Low Waste (Attempts to minimize the timeDifference in travel times)";
+	}
+	
+}
+
+class DelayHeuristic extends Heuristic{
+
+	@Override
+	public int eval(State current, State other, State goal) {
+		BridgeState bCurrent = (BridgeState) current;
+		
+		return bCurrent.totalCost + bCurrent.moved1 + bCurrent.moved2;
+	}
+
+	@Override
+	public String toString() {
+		return "Delay (Attempts to save the most expensize operations for last)";
 	}
 	
 }

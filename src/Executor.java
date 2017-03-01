@@ -95,7 +95,7 @@ public abstract class Executor {
 			for (State s : n.data.expand()){
 				if (record.containsKey(n.data)){
 					if (record.get(n.data) > n.data.totalCost){
-						output("Found a shorter path");
+						//output("Found a shorter path");
 					}
 					v++;
 					continue;

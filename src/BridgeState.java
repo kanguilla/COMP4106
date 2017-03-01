@@ -6,7 +6,9 @@ public class BridgeState extends State{
 	ArrayList<Integer> entitiesL = new ArrayList<Integer>();
 	
 	int reqMove = 1; //1 forward (move right), -1 backward (move right)
-	int difference = 0;
+	int timeDifference = 0;
+	Integer moved1 = 0;
+	Integer moved2 = 0;
 	
 	public BridgeState(int depth, int distance){
 		super(depth, distance);
@@ -32,9 +34,11 @@ public class BridgeState extends State{
 					ns.entitiesL.remove(i2);
 					ns.entitiesR.add(i1);
 					ns.entitiesR.add(i2);
+					ns.moved1 = i1;
+					ns.moved2 = i2;
 					ns.totalCost = this.totalCost + Math.max(i1, i2);
 					ns.reqMove = -1;
-					ns.difference = Math.abs(i1 - i2);
+					ns.timeDifference = Math.abs(i1 - i2);
 					
 					out.add(ns);
 				}
@@ -53,6 +57,7 @@ public class BridgeState extends State{
 				ns.history = (totalCost + ": <- (" + i1 + ")");
 				ns.entitiesR.remove(i1);
 				ns.entitiesL.add(i1);
+				ns.moved1 = i1;
 				ns.totalCost = this.totalCost + i1;
 				ns.reqMove = 1;
 
