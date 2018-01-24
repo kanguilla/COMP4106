@@ -99,7 +99,7 @@ class VaultHeuristic extends Heuristic{
 			}
 		}
 		
-		return c = current.totalCost;
+		return c;
 	}
 
 	@Override

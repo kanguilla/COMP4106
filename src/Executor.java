@@ -38,7 +38,7 @@ public abstract class Executor {
 		maxExamine = i;
 	}
 	
-	protected void setMaxDIfference(int i){
+	protected void setMaxDifference(int i){
 		maxDifference = i;
 	}
 	
@@ -53,13 +53,15 @@ public abstract class Executor {
 		if (goal == null || base == null){
 			output("ERROR - NO STATES DEFINED OR UNREACHABLE STATES");
 			return;
-		}else if (base.difference(goal) < 0){
-			output("ERROR - UNREACHABLE STATE");
-			return;
+		//}else if (base.difference(goal) < 0){
+			//output("ERROR - UNREACHABLE STATE");
+			//return;
 		}else{
 			output("** EXECUTION STARTED **.\n" + introduce() + "\n");
 		}
 		output(base.toString());
+		output(goal.toString());
+		
 		executeBody();
 	}
 	
@@ -117,12 +119,12 @@ public abstract class Executor {
 			output("No solution found. Relaxing to " + (maxDifference + 1) +"...");
 			record = new HashMap<State, Integer>();
 			reset();
-			setMaxDIfference(maxDifference + 1);
+			setMaxDifference(maxDifference + 1);
 			executeBody();
 			return;
 		}
 		
-		output(goal.toString());
+		//output(goal.toString());
 		output("");
 		output((end != null) ? "** COMPLETE **" : "** INCOMPLETE **");
 		output("Desired Solutions  |"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "MAX"));
