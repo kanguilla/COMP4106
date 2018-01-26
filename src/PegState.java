@@ -139,7 +139,7 @@ public class PegState extends State{
 	}
 
 	@Override
-	public boolean isFinal() {
+	public boolean isWinning() {
 		return (p == 1);
 	}
 

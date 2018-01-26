@@ -170,7 +170,7 @@ public class TileState extends State{
 	}
 
 	@Override
-	public boolean isFinal() {
+	public boolean isWinning() {
 		// TODO Auto-generated method stub
 		return false;
 	}

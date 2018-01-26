@@ -9,8 +9,8 @@ public class PegSolitaire {
 		base.log("Initiated");
 		
 		base.init();
-	
 		
+		ex.setSolutionCount(1);
 		ex.setBase(base);
 		ex.slow = false;
 		ex.execute();

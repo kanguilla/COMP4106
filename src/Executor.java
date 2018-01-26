@@ -90,7 +90,7 @@ public abstract class Executor {
 			}
 			
 			
-			if ((goal != null && n.data.equals(goal)) || n.data.isFinal()){
+			if ((goal != null && n.data.equals(goal)) || n.data.isWinning()){
 				
 				solutions++;
 				if (n.data.totalCost < optimal){

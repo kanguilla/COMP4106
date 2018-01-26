@@ -21,7 +21,7 @@ public abstract class State {
 	@Override
 	public abstract String toString();
 
-	public abstract boolean isFinal();
+	public abstract boolean isWinning();
 
 	public abstract String speak();
 }
