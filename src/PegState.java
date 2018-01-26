@@ -48,6 +48,49 @@ public class PegState extends State{
 				
 				if (board[i][j] != 1)continue;
 				
+				int iterations = 0;
+				int vshift = -1;
+				int hshift = 0;
+				
+				while (iterations < 4){
+					iterations++;
+					vshift = (vshift == 1) ? -1 : vshift + 1;
+					hshift = (hshift == 1) ? -1 : hshift + 1;
+					
+					int hrz = (2 * vshift);
+					int vrt = (2 * hshift);
+					
+					int xtarget = i + hrz;
+					int ytarget = j + vrt;
+					
+					int xhopped = i + (hrz/2);
+					int yhopped = j + (vrt/2);
+					
+					if (xtarget)
+					
+					if (xtarget >= 0 && xtarget && board[i + (2 * vshift)][j] == 0 && board[i + (1 * vshift)][j] == 1){
+						PegState ns = new PegState(this.depth+1, d++);
+						for(int x=0; x<s; x++){
+							for(int y=0; y<s; y++){
+								ns.board[x][y]=board[x][y];
+							}
+						}
+						
+						ns.board[i+hrz][j+vrt] = 1;
+						ns.board[i][j] = 0;
+						ns.board[i+(hrz/2)][j+(vrt/2)] = 0;
+						
+						ns.history = ("Move: " + i + "," + j + " to " + (i+hrz) + "," + (j+vrt));
+						ns.p = p-1;
+						out.add(ns);
+					}
+					
+					
+					
+				}
+				
+				
+				
 				if (i-2 >= 0 && board[i-2][j] == 0 && board[i-1][j] == 1){
 					PegState ns = new PegState(this.depth+1, d++);
 					for(int x=0; x<s; x++){
