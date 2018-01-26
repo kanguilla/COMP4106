@@ -17,7 +17,7 @@ class DistanceHeuristic extends Heuristic{
 
 	@Override
 	public String toString() {
-		return "Distance Heuristic (Uses the states timeDifference formula)";
+		return "Distance Heuristic (Uses the state's timeDifference formula)";
 	}
 }
 

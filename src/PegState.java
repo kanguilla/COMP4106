@@ -107,7 +107,13 @@ public class PegState extends State{
 		
 		for (int i = 0; i < s; i++){
 			for (int j = 0; j < s; j++){
-				out += board[i][j] + " ";
+				
+				
+				switch (board[i][j]) {
+				case 2: out += "- "; break;
+				case 1: out += "O "; break;
+				case 0: out += "  "; break;
+				}
 			}
 			out += "\n";
 		}
