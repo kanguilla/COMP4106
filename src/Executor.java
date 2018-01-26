@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public abstract class Executor {
 	public abstract Node<State> selectNode();
@@ -21,7 +22,9 @@ public abstract class Executor {
 	private int maxRelax = 0;
 	private int relaxCount = 0;
 	private Integer findCost;
-	
+	private Scanner s = new Scanner(System.in);
+	public boolean slow = false;
+		
 	protected void setRelax(int i){
 		maxRelax = i;
 	}
@@ -50,7 +53,7 @@ public abstract class Executor {
 	}
 	
 	public void execute(){
-		if (goal == null || base == null){
+		if (base == null){
 			output("ERROR - NO STATES DEFINED OR UNREACHABLE STATES");
 			return;
 		//}else if (base.difference(goal) < 0){
@@ -59,13 +62,13 @@ public abstract class Executor {
 		}else{
 			output("** EXECUTION STARTED **.\n" + introduce() + "\n");
 		}
-		output(base.toString());
-		output(goal.toString());
+		if (base != null)output(base.toString());
+		if (goal != null)output(goal.toString());
 		
 		executeBody();
 	}
 	
-	public void executeBody(){
+	private void executeBody(){
 
 		Node<State> root = new Node<State>(base, null);
 		nodeAdd(root);
@@ -78,9 +81,16 @@ public abstract class Executor {
 		
 		while (!nodesEmpty() && c < maxExamine){
 			
-			Node<State> n = selectNode();
 			
-			if (n.data.equals(goal)){
+			
+			Node<State> n = selectNode();
+			if (slow){
+				s.nextLine();
+				System.out.println(n.data.toString());
+			}
+			
+			
+			if ((goal != null && n.data.equals(goal)) || n.data.isFinal()){
 				
 				solutions++;
 				if (n.data.totalCost < optimal){
@@ -102,7 +112,7 @@ public abstract class Executor {
 					v++;
 					continue;
 				}
-				if (n.data.difference(goal) > maxDifference){
+				if (goal != null && n.data.difference(goal) > maxDifference){
 					v++;
 					continue;
 				}

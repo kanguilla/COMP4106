@@ -20,4 +20,8 @@ public abstract class State {
 	public abstract int hashCode();
 	@Override
 	public abstract String toString();
+
+	public abstract boolean isFinal();
+
+	public abstract String speak();
 }

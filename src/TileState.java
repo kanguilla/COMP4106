@@ -169,4 +169,16 @@ public class TileState extends State{
 		}
 	}
 
+	@Override
+	public boolean isFinal() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String speak() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

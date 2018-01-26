@@ -130,4 +130,16 @@ public class BridgeState extends State{
 		
 		return difference;
 	}
+
+	@Override
+	public boolean isFinal() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String speak() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
