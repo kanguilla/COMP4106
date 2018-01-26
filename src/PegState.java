@@ -6,6 +6,10 @@ public class PegState extends State{
 	int p = 32;
 	int[][] board = new int[s][s];
 	
+	int[] xmoves = {-1,0,1,0};
+	int[] ymoves = {0,1,0,-1};
+	
+	
 	String log = "";
 	
 	public void init(){
@@ -43,114 +47,45 @@ public class PegState extends State{
 
 		int d = 0;
 
-		for (int i = 0; i < s; i++) {
-			for (int j = 0; j < s; j++) {
+		for (int x = 0; x < s; x++) {
+			for (int y = 0; y < s; y++) {
 				
-				if (board[i][j] != 1)continue;
+				if (board[x][y] != 1)continue;
 				
-				int iterations = 0;
-				int vshift = -1;
-				int hshift = 0;
-				
-				while (iterations < 4){
-					iterations++;
-					vshift = (vshift == 1) ? -1 : vshift + 1;
-					hshift = (hshift == 1) ? -1 : hshift + 1;
+				for (int i = 0; i < xmoves.length; i++) {
 					
-					int hrz = (2 * vshift);
-					int vrt = (2 * hshift);
+					int xtarget = x + (2 * xmoves[i]);
+					int ytarget = y + (2 * ymoves[i]);
 					
-					int xtarget = i + hrz;
-					int ytarget = j + vrt;
+					if (xtarget < 0 || xtarget >= s)continue;
+					if (ytarget < 0 || ytarget >= s)continue;
 					
-					int xhopped = i + (hrz/2);
-					int yhopped = j + (vrt/2);
+					int xhopped = x + xmoves[i];
+					int yhopped = y + ymoves[i];
 					
-					if (xtarget)
-					
-					if (xtarget >= 0 && xtarget && board[i + (2 * vshift)][j] == 0 && board[i + (1 * vshift)][j] == 1){
+					if (board[xtarget][ytarget] == 0 && board[xhopped][yhopped] == 1){
 						PegState ns = new PegState(this.depth+1, d++);
-						for(int x=0; x<s; x++){
-							for(int y=0; y<s; y++){
-								ns.board[x][y]=board[x][y];
+						for(int a=0; a<s; a++){
+							for(int b=0; b<s; b++){
+								ns.board[a][b]=board[a][b];
 							}
 						}
 						
-						ns.board[i+hrz][j+vrt] = 1;
-						ns.board[i][j] = 0;
-						ns.board[i+(hrz/2)][j+(vrt/2)] = 0;
+						ns.board[xtarget][ytarget] = 1;
+						ns.board[x][y] = 0;
+						ns.board[xhopped][yhopped] = 0;
 						
-						ns.history = ("Move: " + i + "," + j + " to " + (i+hrz) + "," + (j+vrt));
+						ns.history = ("Move: " + x + "," + y + " to " + xtarget + "," + ytarget);
 						ns.p = p-1;
 						out.add(ns);
 					}
-					
-					
-					
-				}
-				
-				
-				
-				if (i-2 >= 0 && board[i-2][j] == 0 && board[i-1][j] == 1){
-					PegState ns = new PegState(this.depth+1, d++);
-					for(int x=0; x<s; x++){
-						for(int y=0; y<s; y++){
-							ns.board[x][y]=board[x][y];
-						}
-					}
-					ns.board[i-2][j] = 1;
-					ns.board[i][j] = 0;
-					ns.board[i-1][j] = 0;
-					ns.log("UP: " + i + "," + j + " to " + (i-2) + "," + j);
-					ns.p = p-1;
-					out.add(ns);
-				}
-				if (i+2 < 7 && board[i+2][j] == 0 && board[i+1][j] == 1){
-					PegState ns = new PegState(this.depth+1, d++);
-					for(int x=0; x<s; x++){
-						for(int y=0; y<s; y++){
-							ns.board[x][y]=board[x][y];
-						}
-					}
-					ns.board[i+2][j] = 1;
-					ns.board[i][j] = 0;
-					ns.board[i+1][j] = 0;
-					ns.log("DOWN: " + i + "," + j + " to " + (i+2) + "," + j);
-					ns.p = p-1;
-					out.add(ns);
-				}
-				if (j-2 >= 0 && board[i][j-2] == 0 && board[i][j-1] == 1){
-					PegState ns = new PegState(this.depth+1, d++);
-					for(int x=0; x<s; x++){
-						for(int y=0; y<s; y++){
-							ns.board[x][y]=board[x][y];
-						} 
-					}
-					ns.board[i][j-2] = 1;
-					ns.board[i][j] = 0;
-					ns.board[i][j-1] = 0;
-					ns.log("LEFT: " + i + "," + j + " to " + (i) + "," + (j-2));
-					ns.p = p-1;
-					out.add(ns);
-				}
-				if (j+2 <7 && board[i][j+2] == 0 && board[i][j+1] == 1){
-					PegState ns = new PegState(this.depth+1, d++);
-					for(int x=0; x<s; x++){
-						for(int y=0; y<s; y++){
-							ns.board[x][y]=board[x][y];
-						}
-					}
-					ns.board[i][j+2] = 1;
-					ns.board[i][j] = 0;
-					ns.board[i][j+1] = 0;
-					ns.log("RIGHT: " + i + "," + j + " to " + (i) + "," + (j+2));
-					ns.p = p-1;
-					out.add(ns);
+
 				}
 			
 			}
+			
 		}
-
+		
 		return out;
 	}
 
