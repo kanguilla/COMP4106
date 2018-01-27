@@ -2,8 +2,8 @@
 public class PegSolitaire {
 	
 	public static void main (String[] args){
-		Executor ex = new DFSExecutor();
-		//((AstarExecutor) ex).addHeuristic(new DistanceHeuristic());
+		AstarExecutor<PegState> ex = new AstarExecutor<PegState>();
+		ex.addHeuristic(new DistanceHeuristic());
 		
 		PegState base = new PegState(0, 0);
 		base.log("Initiated");

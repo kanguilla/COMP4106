@@ -2,9 +2,9 @@
 public class SpaceFinding {
 	public static void main (String[] args){
 		
-		Executor ex = new AstarExecutor();
-		((AstarExecutor) ex).addHeuristic(new CountingHeuristic());
-		((AstarExecutor) ex).addHeuristic(new VaultHeuristic());
+		AstarExecutor<TileState> ex = new AstarExecutor<TileState>();
+		ex.addHeuristic(new CountingHeuristic());
+		ex.addHeuristic(new VaultHeuristic());
 		
 		TileState base = new TileState(0, 0);
 		base.addTile(" ", 0, 0);

@@ -3,18 +3,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public abstract class Executor {
-	public abstract Node<State> selectNode();
+public abstract class Executor<T extends State> {
+	public abstract Node<T> selectNode();
 	public abstract void output(String s);
-	public abstract void handleChild(Node<State> n);
+	public abstract void handleChild(Node<T> n);
 	public abstract String introduce();
-	public abstract void nodeAdd(Node<State> n);
+	public abstract void nodeAdd(Node<T> n);
 	public abstract boolean nodesEmpty();
 	public abstract void reset();
 	public abstract void clearNodes();
 	
-	protected State goal, base;
-	private Map<State, Integer> record = new HashMap<State, Integer>();
+	protected T goal, base;
+	private Map<T, Integer> record = new HashMap<T, Integer>();
 	
 	private int desiredSolutions = Integer.MAX_VALUE;
 	private int maxExamine = Integer.MAX_VALUE;
@@ -45,10 +45,10 @@ public abstract class Executor {
 		maxDifference = i;
 	}
 	
-	protected void setBase(State s){
+	protected void setBase(T s){
 		this.base = s;
 	}
-	protected void setGoal(State s){
+	protected void setGoal(T s){
 		this.goal = s;
 	}
 	
@@ -70,10 +70,10 @@ public abstract class Executor {
 	
 	private void executeBody(){
 
-		Node<State> root = new Node<State>(base, null);
+		Node<T> root = new Node<T>(base, null);
 		nodeAdd(root);
 		int optimal = Integer.MAX_VALUE;
-		Node<State> end = null;	
+		Node<T> end = null;	
 		
 		int c = 0;
 		int v = 0;
@@ -83,7 +83,7 @@ public abstract class Executor {
 			
 			
 			
-			Node<State> n = selectNode();
+			Node<T> n = selectNode();
 			if (slow){
 				s.nextLine();
 				System.out.println(n.data.toString());
@@ -104,7 +104,7 @@ public abstract class Executor {
 					break;
 				}
 			}
-			for (State s : n.data.expand()){
+			for (T s : n.data.expand()){
 				if (record.containsKey(n.data)){
 					if (record.get(n.data) > n.data.totalCost){
 						//output("Found a shorter path");
@@ -116,7 +116,7 @@ public abstract class Executor {
 					v++;
 					continue;
 				}
-				Node<State> child = new Node<State>(s, n);
+				Node<T> child = new Node<T>(s, n);
 				handleChild(child);
 			}
 			record.put(n.data, n.data.totalCost);
@@ -127,7 +127,7 @@ public abstract class Executor {
 		if ((end == null) && relaxCount < maxRelax){
 			relaxCount++;
 			output("No solution found. Relaxing to " + (maxDifference + 1) +"...");
-			record = new HashMap<State, Integer>();
+			record = new HashMap<T, Integer>();
 			reset();
 			setMaxDifference(maxDifference + 1);
 			executeBody();

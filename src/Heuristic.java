@@ -1,15 +1,15 @@
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-public abstract class Heuristic {
-	public abstract int eval(State current, State other, State goal);
+public abstract class Heuristic<T> {
+	public abstract int eval(T current, T other, T goal);
 	public abstract String toString();
 	
 	
 	
 }
 
-class DistanceHeuristic extends Heuristic{
+class DistanceHeuristic extends Heuristic<State>{
 	@Override
 	public int eval(State current, State other, State goal) {
 		return current.difference(goal);
@@ -21,32 +21,31 @@ class DistanceHeuristic extends Heuristic{
 	}
 }
 
-class CountingHeuristic extends Heuristic{
+class CountingHeuristic extends Heuristic<TileState>{
+	
 	@Override
-	public int eval(State current, State other, State goal) {
+	public String toString() {
+		return "Counting Heuristic (TileState: Counts each tile that is the wrong place)";
+	}
+
+	@Override
+	public int eval(TileState current, TileState other, TileState goal) {
 		int c = 0;
-		TileState tCurrent = (TileState) current;
-		TileState tGoal = (TileState) goal;
-		for (Entry<TileState.Pair, String> e : tCurrent.nodeMap.entrySet()){
-			if (e.getValue() != tGoal.nodeMap.get(e.getKey())){
+		for (Entry<TileState.Pair, String> e : current.nodeMap.entrySet()){
+			if (e.getValue() != goal.nodeMap.get(e.getKey())){
 				c++;
 			}
 		}
 		return c;
 	}
-
-	@Override
-	public String toString() {
-		return "Counting Heuristic (TileState: Counts each tile that is the wrong place)";
-	}
 	
 }
 
-class LowWasteHeuristic extends Heuristic{
+class LowWasteHeuristic extends Heuristic<BridgeState>{
 
 	@Override
-	public int eval(State current, State other, State goal) {
-		return ((BridgeState) current).timeDifference + current.totalCost;
+	public int eval(BridgeState current, BridgeState other, BridgeState goal) {
+		return current.timeDifference + current.totalCost;
 	}
 
 	@Override
@@ -56,10 +55,10 @@ class LowWasteHeuristic extends Heuristic{
 	
 }
 
-class DelayHeuristic extends Heuristic{
+class DelayHeuristic extends Heuristic<BridgeState>{
 
 	@Override
-	public int eval(State current, State other, State goal) {
+	public int eval(BridgeState current, BridgeState other, BridgeState goal) {
 		BridgeState bCurrent = (BridgeState) current;
 		
 		return bCurrent.moved1 + bCurrent.moved2;
@@ -72,23 +71,20 @@ class DelayHeuristic extends Heuristic{
 	
 }
 
-class VaultHeuristic extends Heuristic{
+class VaultHeuristic extends Heuristic<TileState>{
 
 	@Override
-	public int eval(State current, State other, State goal) {
+	public int eval(TileState current, TileState other, TileState goal) {
 		int c = 0;
 		
-		TileState tCurrent = (TileState) current;
-		TileState tGoal = (TileState) goal;
-		
 		TileState ns = new TileState(0, 0);
-		ns.nodeMap = new HashMap<TileState.Pair, String>(tGoal.nodeMap);
+		ns.nodeMap = new HashMap<TileState.Pair, String>(goal.nodeMap);
 		
-		while (!ns.equals(tGoal)){
-			for (Entry<TileState.Pair, String> e : tCurrent.nodeMap.entrySet()){
+		while (!ns.equals(goal)){
+			for (Entry<TileState.Pair, String> e : current.nodeMap.entrySet()){
 				TileState.Pair p1 = e.getKey();
 				TileState.Pair p2 = null;
-				for (Entry<TileState.Pair, String> f : tGoal.nodeMap.entrySet()){
+				for (Entry<TileState.Pair, String> f : goal.nodeMap.entrySet()){
 					if (f.getValue().equals(e.getValue())){
 						p2 = f.getKey();
 					}
@@ -114,6 +110,41 @@ class VaultHeuristic extends Heuristic{
 	}
 	
 }
+
+
+/** Peg Solitaire Heuristics **/
+
+
+class KeepTogetherHeuristic extends Heuristic<PegState> {
+
+	@Override
+	public int eval(PegState current, PegState other, PegState goal) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String toString() {
+		return "Tries to keep all of the pegs close together";
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
