@@ -2,7 +2,7 @@
 public class SpaceFinding2 {
 	public static void main (String[] args){
 		
-		Executor ex = new BFSExecutor();
+		Executor<TileState> ex = new BFSExecutor<TileState>();
 		//((AstarExecutor) ex).addHeuristic(new CountingHeuristic());
 		//((AstarExecutor) ex).addHeuristic(new VaultHeuristic());
 		
