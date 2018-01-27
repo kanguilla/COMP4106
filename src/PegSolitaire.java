@@ -3,7 +3,7 @@ public class PegSolitaire {
 	
 	public static void main (String[] args){
 		AstarExecutor<PegState> ex = new AstarExecutor<PegState>();
-		ex.addHeuristic(new DistanceHeuristic());
+		ex.addHeuristic(new KeepTogetherHeuristic());
 		
 		PegState base = new PegState(0, 0);
 		base.log("Initiated");

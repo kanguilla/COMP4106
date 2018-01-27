@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class AstarExecutor<T extends State> extends Executor {
+public class AstarExecutor<T extends State> extends Executor<T> {
 	
 	private ArrayList<Heuristic<T>> heuristics = new ArrayList<Heuristic<T>>();
 	
@@ -20,7 +20,7 @@ public class AstarExecutor<T extends State> extends Executor {
 			avg1 = avg1/heuristics.size();
 			
 			double avg2 = 0;
-			for (Heuristic<State> h : heuristics){
+			for (Heuristic<T> h : heuristics){
 				avg2 = avg2 + h.eval(s2.data, s1.data, goal);
 			}
 			avg2 = avg2/heuristics.size();
@@ -83,4 +83,5 @@ public class AstarExecutor<T extends State> extends Executor {
 	public void clearNodes() {
 		nodeList.clear();
 	}
+}
 

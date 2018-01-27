@@ -104,7 +104,7 @@ public abstract class Executor<T extends State> {
 					break;
 				}
 			}
-			for (T s : n.data.expand()){
+			for (State s : n.data.expand()){
 				if (record.containsKey(n.data)){
 					if (record.get(n.data) > n.data.totalCost){
 						//output("Found a shorter path");
@@ -116,7 +116,7 @@ public abstract class Executor<T extends State> {
 					v++;
 					continue;
 				}
-				Node<T> child = new Node<T>(s, n);
+				Node<T> child = new Node<T>((T) s, n);
 				handleChild(child);
 			}
 			record.put(n.data, n.data.totalCost);

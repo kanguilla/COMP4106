@@ -1,11 +1,11 @@
 import java.util.ArrayDeque;
 
-public class DFSExecutor extends Executor {
+public class DFSExecutor<T extends State> extends Executor<T> {
 	
-	ArrayDeque<Node<State>> nodeList = new ArrayDeque<Node<State>>();
+	ArrayDeque<Node<T>> nodeList = new ArrayDeque<Node<T>>();
 	
 	@Override
-	public Node<State> selectNode() {
+	public Node<T> selectNode() {
 		return nodeList.pop();
 	}
 
@@ -15,7 +15,7 @@ public class DFSExecutor extends Executor {
 	}
 	
 	@Override
-	public void handleChild(Node<State> child){
+	public void handleChild(Node<T> child){
 		nodeList.addFirst(child);
 	}
 
@@ -25,7 +25,7 @@ public class DFSExecutor extends Executor {
 	}
 
 	@Override
-	public void nodeAdd(Node<State> n) {
+	public void nodeAdd(Node<T> n) {
 		nodeList.add(n);
 	}
 
@@ -36,7 +36,7 @@ public class DFSExecutor extends Executor {
 
 	@Override
 	public void reset() {
-		nodeList = new ArrayDeque<Node<State>>();
+		nodeList = new ArrayDeque<Node<T>>();
 	}
 	
 	@Override
