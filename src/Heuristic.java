@@ -115,17 +115,79 @@ class VaultHeuristic extends Heuristic<TileState>{
 /** Peg Solitaire Heuristics **/
 
 
-class KeepTogetherHeuristic extends Heuristic<PegState> {
+class KeepTogether extends Heuristic<PegState> {
 
 	@Override
 	public int eval(PegState current, PegState other, PegState goal) {
-		// TODO Auto-generated method stub
-		return 0;
+		int score = 0;
+		for (int x = 0; x < current.s; x++) {
+			for (int y = 0; y < current.s; y++) {
+				if (current.board[x][y] == 1) {
+					if (x > 0 && current.board[x-1][y] == 1) score--;
+					if (x < 6 && current.board[x+1][y] == 1) score--;
+					if (y < 6 && current.board[x][y+1] == 1) score--;
+					if (y > 0 && current.board[x][y-1] == 1) score--;
+				}
+			}
+		}
+		return score;
 	}
 
 	@Override
 	public String toString() {
-		return "Tries to keep all of the pegs close together";
+		return "tries to keep all of the pegs close together";
+	}
+	
+}
+
+class Central extends Heuristic<PegState> {
+
+	@Override
+	public int eval(PegState current, PegState other, PegState goal) {
+		int score = 0;
+		for (int x = 0; x < current.s; x++) {
+			for (int y = 0; y < current.s; y++) {
+				if (current.board[x][y] == 1) {
+					score = score + (Math.abs(x-3) + Math.abs(y-3))^3;
+				}
+			}
+		}
+		return score;
+	}
+
+	@Override
+	public String toString() {
+		return "tries to keep all of the pegs close together";
+	}
+	
+}
+
+class AvoidEdges extends Heuristic<PegState> {
+
+	@Override
+	public int eval(PegState current, PegState other, PegState goal) {
+		int score = 0;
+		if (current.board[0][2] == 1) score += 20;
+		if (current.board[0][3] == 1) score += 20;
+		if (current.board[0][4] == 1) score += 20;
+		if (current.board[6][2] == 1) score += 20;
+		if (current.board[6][3] == 1) score += 20;
+		if (current.board[6][4] == 1) score += 20;
+
+		if (current.board[2][0] == 1) score += 20;
+		if (current.board[3][0] == 1) score += 20;
+		if (current.board[4][0] == 1) score += 20;
+		if (current.board[2][6] == 1) score += 20;
+		if (current.board[3][6] == 1) score += 20;
+		if (current.board[4][6] == 1) score += 20;
+		
+		System.out.println(score);
+		return score;
+	}
+
+	@Override
+	public String toString() {
+		return "tries to keep all of the pegs close together";
 	}
 	
 }

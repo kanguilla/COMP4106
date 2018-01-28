@@ -86,8 +86,9 @@ public abstract class Executor<T extends State> {
 			Node<T> n = selectNode();
 			if (slow){
 				s.nextLine();
-				System.out.println(n.data.toString());
+				//System.out.println(n.data.toString());
 			}
+			System.out.println(n.data.toString());
 			
 			
 			if ((goal != null && n.data.equals(goal)) || n.data.isWinning()){
