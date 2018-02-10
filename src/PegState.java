@@ -1,10 +1,13 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PegState extends State{
 
 	int s = 7;
 	int p = 32;
-	int[][] board = new int[s][s];
+	int[][] board;
+	
+	String code;
 	
 	int[] xmoves = {-1,0,1,0};
 	int[] ymoves = {0,1,0,-1};
@@ -12,7 +15,10 @@ public class PegState extends State{
 	
 	String log = "";
 	
-	public void init(){
+	public void initA(){
+		s = 7;
+		p = 32;
+		board = new int[s][s];
 		for (int i = 0; i < s; i++){
 			for (int j = 0; j < s; j++){
 				board[i][j] = 1;
@@ -24,9 +30,34 @@ public class PegState extends State{
 		}
 		board[3][3] = 0;
 	}
+	
+	public void initB(){
+		s = 7;
+		p = 36;
+		board = new int[s][s];
+		for (int i = 0; i < s; i++){
+			for (int j = 0; j < s; j++){
+				board[i][j] = 1;
+				if (i <= 1 && j <= 1)board[i][j] = 2;
+				if (i <= 1 && j >= 5)board[i][j] = 2;
+				if (i >= 5 && j >= 5)board[i][j] = 2;
+				if (i >= 5 && j <= 1)board[i][j] = 2;
+			}
+		}
+		board[1][1] = 1;
+		board[5][5] = 1;
+		board[1][5] = 1;
+		board[5][1] = 1;
+		board[2][3] = 0;
+	}
+
 
 	public PegState(int depth, int distance) {
 		super(depth, distance);
+		s = 7;
+		p = 32;
+		board = new int[s][s];
+		totalCost = p;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -77,6 +108,8 @@ public class PegState extends State{
 						
 						ns.history = ("Move: " + x + "," + y + " to " + xtarget + "," + ytarget);
 						ns.p = p-1;
+						ns.codify();
+						
 						out.add(ns);
 					}
 
@@ -89,9 +122,51 @@ public class PegState extends State{
 		return out;
 	}
 
+	public void codify(){
+		String[] codes = {"","","","","","","",""};
+		
+		for (int x = 0; x < s; x++){
+			for (int y = 0; y < s; y++){
+				codes[0] += board[x][y];
+				codes[1] += board[y][x];
+			}
+		}
+		
+		for (int x = s-1; x >= 0; x--){
+			for (int y = 0; y < s; y++){
+				codes[2] += board[x][y];
+				codes[3] += board[y][x];
+			}
+		}
+		
+		for (int x = 0; x < s; x++){
+			for (int y = s-1; y >= 0; y--){
+				codes[4] += board[x][y];
+				codes[5] += board[y][x];
+			}
+		}
+		
+		for (int x = s-1; x >= 0; x--){
+			for (int y = s-1; y >= 0; y--){
+				codes[6] += board[x][y];
+				codes[7] += board[y][x];
+			}
+		}
+		
+		Arrays.sort(codes);
+		code = codes[0];
+		
+	}
+	
+	
 	@Override
 	public boolean equals(Object other) {
-		return board.equals(((PegState) other).board);
+		
+		PegState p = (PegState) other;
+		p.codify();
+		codify();
+		
+		return code.equals(p.code);
 	}
 
 	@Override

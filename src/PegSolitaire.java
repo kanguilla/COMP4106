@@ -2,19 +2,20 @@
 public class PegSolitaire {
 	
 	public static void main (String[] args){
-		AstarExecutor<PegState> ex = new AstarExecutor<PegState>();
+		DFSExecutor<PegState> ex = new DFSExecutor<PegState>();
 		//ex.addHeuristic(new Central());
 		//ex.addHeuristic(new KeepTogether());
-		ex.addHeuristic(new Central());
+		//ex.addHeuristic(new Central());
 		
 		PegState base = new PegState(0, 0);
 		base.log("Initiated");
 		
-		base.init();
+		base.initB();
 		
-		ex.setMaxExamine(200);
+		ex.verbose = true;
+		ex.slow = true;
 		ex.setBase(base);
-		ex.slow = false;
+		
 		ex.execute();
 		
 	}

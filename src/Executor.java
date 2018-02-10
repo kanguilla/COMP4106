@@ -23,7 +23,7 @@ public abstract class Executor<T extends State> {
 	private int relaxCount = 0;
 	private Integer findCost;
 	private Scanner s = new Scanner(System.in);
-	public boolean slow = false;
+	public boolean slow, verbose = false;
 		
 	protected void setRelax(int i){
 		maxRelax = i;
@@ -62,8 +62,8 @@ public abstract class Executor<T extends State> {
 		}else{
 			output("** EXECUTION STARTED **.\n" + introduce() + "\n");
 		}
-		if (base != null)output(base.toString());
-		if (goal != null)output(goal.toString());
+		//if (base != null)output(base.toString());
+		//if (goal != null)output(goal.toString());
 		
 		executeBody();
 	}
@@ -80,16 +80,13 @@ public abstract class Executor<T extends State> {
 		int solutions = 0;
 		
 		while (!nodesEmpty() && c < maxExamine){
-			
-			
-			
 			Node<T> n = selectNode();
-			if (slow){
-				s.nextLine();
-				//System.out.println(n.data.toString());
-			}
-			System.out.println(n.data.toString());
 			
+			if(verbose){
+				System.out.println(c + "..");
+				System.out.println(n.data.toString());	
+			}
+			if(slow)s.nextLine();		
 			
 			if ((goal != null && n.data.equals(goal)) || n.data.isWinning()){
 				
@@ -110,6 +107,8 @@ public abstract class Executor<T extends State> {
 					if (record.get(n.data) > n.data.totalCost){
 						//output("Found a shorter path");
 					}
+					
+					System.out.println("duplicate");
 					v++;
 					continue;
 				}
