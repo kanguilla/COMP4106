@@ -1,7 +1,7 @@
 import java.util.*;
  
 public class PegSolitaireSolver {
-    private static final HashSet<Long> seenBoards = new HashSet<Long>();
+    private static final HashSet<Long> record = new HashSet<Long>();
     private static final ArrayList<Long> solution = new ArrayList<Long>();
  
     private static final long GOAL_BOARD = 16777216L;
@@ -28,8 +28,8 @@ public class PegSolitaireSolver {
         for (long[] move : moves) {
             if ((move[1] & board) == 0L && (move[0] & board) != 0L) {
                 long newBoard = board ^ move[2];
-                if (!seenBoards.contains(newBoard)) {
-                    seenBoards.add(newBoard);
+                if (!record.contains(newBoard)) {
+                    record.add(newBoard);
                     if (newBoard == INITIAL_BOARD || search(newBoard)) {
                         solution.add(board);
                         return true;

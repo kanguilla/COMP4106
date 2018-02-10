@@ -2,7 +2,7 @@
 public class PegSolitaire {
 	
 	public static void main (String[] args){
-		DFSExecutor<PegState> ex = new DFSExecutor<PegState>();
+		BackTrackerExecutor ex = new BackTrackerExecutor();
 		//ex.addHeuristic(new Central());
 		//ex.addHeuristic(new KeepTogether());
 		//ex.addHeuristic(new Central());
@@ -12,8 +12,8 @@ public class PegSolitaire {
 		
 		base.initB();
 		
-		ex.verbose = true;
-		ex.slow = true;
+		//ex.verbose = true;
+		//ex.slow = true;
 		ex.setBase(base);
 		
 		ex.execute();
