@@ -51,6 +51,35 @@ public class PegState extends State{
 		board[2][3] = 0;
 	}
 
+	public void initC(){
+		s = 7;
+		p = 14;
+		board = new int[s][s];
+		for (int i = 0; i < s; i++){
+			for (int j = 0; j < s; j++){
+				board[i][j] = 0;
+				if (i <= 1 && j <= 1)board[i][j] = 2;
+				if (i <= 1 && j >= 5)board[i][j] = 2;
+				if (i >= 5 && j >= 5)board[i][j] = 2;
+				if (i >= 5 && j <= 1)board[i][j] = 2;
+			}
+		}
+		board[2][0] = 1;
+		board[3][0] = 1;
+		board[4][0] = 1;
+		board[2][1] = 1;
+		board[3][1] = 1;
+		board[3][2] = 1;
+		board[4][3] = 1;
+		board[2][4] = 1;
+		board[3][4] = 1;
+		board[4][4] = 1;
+		board[5][4] = 1;
+		board[6][4] = 1;
+		board[1][5] = 1;
+		board[5][5] = 1;
+		
+	}
 
 	public PegState(int depth, int distance) {
 		super(depth, distance);

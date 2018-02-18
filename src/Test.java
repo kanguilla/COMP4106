@@ -3,10 +3,12 @@ public class Test {
 
 	public static void main(String[] args) {
 		PegState state = new PegState(0, 0);	
-		state.initB();
+		state.initC();
 		
 		PegState state2 = new PegState(0,0);
-		state2.initB();
+		state2.initC();
+		
+		System.out.println(state.toString());
 		
 		System.out.println(state.equals(state2));
 		

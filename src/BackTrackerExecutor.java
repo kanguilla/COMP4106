@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class BackTrackerExecutor{
 
@@ -21,7 +23,7 @@ public class BackTrackerExecutor{
 	}
 	
 	protected State end, base;
-	private Map<State, Integer> record = new HashMap<State, Integer>();
+	private Set<State> record = new HashSet<State>();
 	
 	private Scanner s = new Scanner(System.in);
 	
@@ -65,29 +67,38 @@ public class BackTrackerExecutor{
 		if(done) {
 			return;
 		}
-		
-		if(slow)s.nextLine();	
+		System.out.println(depth);
+		if(slow){
+			s.nextLine();	
+		}
 		if(verbose){
 			System.out.println(game.toString());	
 		}
 		
-
-		for (State s : game.expand()){
-			if (s != null) {
-				record.put(s, depth + 1);
-				
-				if(s.isWinning()) {
-					done = true;
-					end = s;
-					c = depth;
-				}
-				
-				executeBody(s, depth + 1);
-				
-			}else {
-				
-			}
+		ArrayList<State> moves = game.expand();
+		if (moves.size() == 0){
+			System.out.println("terminated state");
 		}
 		
+		for (State s : moves){
+			
+			if(record.contains(s)){
+				System.out.println("found dup.");
+				continue;
+			}
+			
+			record.add(s);
+			if(s.isWinning()) {
+				done = true;
+				end = s;
+				c = depth;
+			}else{
+				System.out.println(s.toString());
+			}
+				
+			executeBody(s, depth + 1);
+				
+		}
 	}
 }
+ 
