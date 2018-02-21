@@ -11,7 +11,7 @@ public class PegState extends State{
 	String code = "empty";
 	
 	int[] xmoves = {-1,0,1,0};
-	int[] ymoves = {0,1,0,-1};
+	int[] ymoves = {0,-1,0,1};
 	
 	
 	String log = "";
@@ -41,10 +41,11 @@ public class PegState extends State{
 		ArrayList<State> out = new ArrayList<State>();
 
 		int d = 0;
+		
+		for (int k = PegLayouts.orderR.length -1; k >= 0; k--){
+			int x = PegLayouts.orderR[k][0];
+			int y = PegLayouts.orderR[k][1];
 
-		for (int x = 0; x < w; x++) {
-			for (int y = 0; y < h; y++) {
-				
 				if (board[x][y] != 1)continue;
 				
 				for (int i = 0; i < xmoves.length; i++) {
@@ -60,10 +61,9 @@ public class PegState extends State{
 					
 					if (board[xtarget][ytarget] == 0 && board[xhopped][yhopped] == 1){
 						PegState ns = new PegState(this.depth+1, d++);
-						for(int a=0; a<w; a++){
-							for(int b=0; b<h; b++){
-								ns.board[a][b]=board[a][b];
-							}
+						
+						for (int a = 0; a < board.length; a++) {
+						    System.arraycopy(board[a], 0, ns.board[a], 0, board[0].length);
 						}
 						
 						ns.board[xtarget][ytarget] = 1;
@@ -79,7 +79,6 @@ public class PegState extends State{
 			
 			}
 			
-		}
 		
 		return out;
 	}
@@ -174,6 +173,7 @@ public class PegState extends State{
 	public void setBoard(int[][] board) {
 		this.board = board;
 		this.w = board[1].length;
+		this.h = board.length;
 		pegs = 0;
 		for (int i = 0; i < w; i++){
 			for (int j = 0; j < h; j++){

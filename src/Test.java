@@ -15,6 +15,9 @@ public class Test {
 		
 		
 		System.out.println(state.code() + "\n" + state2.code());
+		
+	
+		
 	}
 
 }

@@ -133,12 +133,14 @@ public abstract class Executor<T extends State> {
 			for (State s : data.expand()){
 				if (!forget && record.contains(data.code())){
 					v++;
+					
 					continue;
 				}else{
 					Node<T> child = new Node<T>((T) s, n);
 					handleChild(child);
 				}
 			}
+			
 			record.add(data.code());
 		}
 	
@@ -146,7 +148,8 @@ public abstract class Executor<T extends State> {
 		output(goal.toString());
 		output("");
 		output((end != null) ? "** COMPLETE **" : "** INCOMPLETE **");
-		output("Desired Solutions  |"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "MAX"));
+		output("Executor took "+(System.currentTimeMillis() - l)/1000f + " seconds.");
+		output("Solutions          |("+solutions + "/"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "ALL") + ")");
 		output("Maximum Nodes      |"+((maxExamine < Integer.MAX_VALUE) ? maxExamine : "MAX"));
 		output("Maximum Difference |"+((maxDifference < Integer.MAX_VALUE) ? maxDifference : "MAX"));
 		output("Maximum Relax      |"+((maxRelax > 0) ? (maxDifference + " times"): "N/A"));
@@ -155,7 +158,6 @@ public abstract class Executor<T extends State> {
 		
 		if (end != null){
 			output("End cost:          |"+end.data.totalCost);
-			output("Total solutions:   |"+solutions);
 			output("\nHISTORY");
 			ArrayList<String> history = new ArrayList<String>();
 			while (end != null){
@@ -168,7 +170,6 @@ public abstract class Executor<T extends State> {
 		}else{	
 			output("No solutions found.");
 		}
-		System.out.println("Execution took "+ (System.currentTimeMillis() - l) +" ms");
 	}
 	
 	public void forgetful() {

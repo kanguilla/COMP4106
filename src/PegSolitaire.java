@@ -11,10 +11,11 @@ public class PegSolitaire {
 		PegState base = new PegState(0, 0);
 		base.log("Initiated");
 		
-		base.setBoard(PegLayouts.english);
+		base.setBoard(PegLayouts.euro);
 		
-		ex.verbose(10000);
-		//ex.slow = true;
+		
+		ex.verbose(1);
+		ex.slow();
 		ex.setBase(base);
 		ex.setSolutionCount(1);
 		
