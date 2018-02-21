@@ -13,9 +13,10 @@ public abstract class Executor<T extends State> {
 	public abstract boolean nodesEmpty();
 	public abstract void reset();
 	public abstract void clearNodes();
+	public abstract int numNodes();
 	
 	protected T goal, base;
-	private HashSet<T> record = new HashSet<T>();
+	private HashSet<String> record = new HashSet<String>();
 	
 	private int desiredSolutions = Integer.MAX_VALUE;
 	private int maxExamine = Integer.MAX_VALUE;
@@ -24,8 +25,9 @@ public abstract class Executor<T extends State> {
 	private int relaxCount = 0;
 	private Integer findCost;
 	private Scanner s = new Scanner(System.in);
-	public boolean slow, verbose = false;
-		
+	public boolean forget, slow, verbose = false;
+	private int interval = 1;
+	
 	protected void setRelax(int i){
 		maxRelax = i;
 	}
@@ -63,10 +65,20 @@ public abstract class Executor<T extends State> {
 		}else{
 			output("** EXECUTION STARTED **.\n" + introduce() + "\n");
 		}
-		//if (base != null)output(base.toString());
+		if (base != null)output(base.toString());
 		//if (goal != null)output(goal.toString());
 		
 		executeBody();
+	}
+	
+
+	public void verbose(int i) {
+		verbose = true;
+		interval = i;
+	}
+	
+	public void slow() {
+		slow = true;
 	}
 	
 	private void executeBody(){
@@ -84,18 +96,31 @@ public abstract class Executor<T extends State> {
 		while (!nodesEmpty() && c < maxExamine){
 			Node<T> n = selectNode();
 			T data = n.data;
-			
+			c++;
 			if(verbose){
-				System.out.println(c + "..");
-				System.out.println(data.toString());	
-			}
-			if(slow){s.nextLine();		
-			
+				if (c%interval == 0){
+					System.out.println(
+							"\nExamined:" + c +
+							"\nNodes in list: " + numNodes() + 
+							"\nNode depth: " + data.depth + 
+							"\nKnown unique states: " + record.size() + 
+							"\nSkipped states: " + v);
+					System.out.println(data.toString());
+					if(slow){s.nextLine();		
+					
+					}
+				}
 			}
 			
 			if (data.isWinning()){
 				
-				solutions++;
+				solutions++;	
+				goal = data;
+				if (solutions >= desiredSolutions){
+					end = n;
+					break;
+				}
+				
 				if (data.totalCost < optimal){
 					optimal = data.totalCost;
 					end = n;
@@ -103,39 +128,22 @@ public abstract class Executor<T extends State> {
 				if (findCost != null && optimal == findCost){
 					break;
 				}
-				if (solutions >= desiredSolutions){
-					break;
-				}
+				
 			}
 			for (State s : data.expand()){
-				if (record.contains(data)){
-//					if (record.(n.data) > n.data.totalCost){
-//						//output("Found a shorter path");
-//					}
-					
+				if (!forget && record.contains(data.code())){
 					v++;
 					continue;
+				}else{
+					Node<T> child = new Node<T>((T) s, n);
+					handleChild(child);
 				}
-				
-				Node<T> child = new Node<T>((T) s, n);
-				handleChild(child);
 			}
-			record.add(n.data);
-			
-			c++;
+			record.add(data.code());
 		}
+	
 		
-		if ((end == null) && relaxCount < maxRelax){
-			relaxCount++;
-			output("No solution found. Relaxing to " + (maxDifference + 1) +"...");
-			record = new HashSet<T>();
-			reset();
-			setMaxDifference(maxDifference + 1);
-			executeBody();
-			return;
-		}
-		
-		//output(goal.toString());
+		output(goal.toString());
 		output("");
 		output((end != null) ? "** COMPLETE **" : "** INCOMPLETE **");
 		output("Desired Solutions  |"+((desiredSolutions < Integer.MAX_VALUE) ? desiredSolutions : "MAX"));
@@ -160,5 +168,11 @@ public abstract class Executor<T extends State> {
 		}else{	
 			output("No solutions found.");
 		}
+		System.out.println("Execution took "+ (System.currentTimeMillis() - l) +" ms");
 	}
+	
+	public void forgetful() {
+		forget = true;
+	}
+
 }

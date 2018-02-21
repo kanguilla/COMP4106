@@ -11,13 +11,38 @@ public class SmallPegState extends State{
 	
 	String code;
 	
-	int[] xmoves = {-1,0,1,0};
-	int[] ymoves = {0,1,0,-1};
-	
 	
 	String log = "";
 	
-	
+	public void initA(){
+		s = 7;
+		p = 36;
+		board = new HashMap<Integer, Integer>();
+		for (int i = 0; i < s; i++){
+			for (int j = 0; j < s; j++){
+				board.put((i * 10) + j, 1);
+			}
+		}
+		
+		board.put(00, 2);
+		board.put(01, 2);
+		board.put(05, 2);
+		board.put(06, 2);
+		
+		board.put(10, 2);
+		board.put(16, 2);
+		
+		board.put(50, 2);
+		board.put(56, 2);
+		
+		board.put(60, 2);
+		board.put(61, 2);
+		board.put(65, 2);
+		board.put(66, 2);
+		
+		board.put(23, 0);
+
+	}
 	public void initC(){
 		s = 7;
 		p = 14;
@@ -25,13 +50,25 @@ public class SmallPegState extends State{
 		for (int i = 0; i < s; i++){
 			for (int j = 0; j < s; j++){
 				board.put((i * 10) + j, 0);
-		
-				if (i <= 1 && j <= 1)board.put((i * 10) + j, 2);
-				if (i <= 1 && j >= 5)board.put((i * 10) + j, 2);
-				if (i >= 5 && j >= 5)board.put((i * 10) + j, 2);
-				if (i >= 5 && j <= 1)board.put((i * 10) + j, 2);
+	
 			}
 		}
+		
+		board.put(00, 2);
+		board.put(01, 2);
+		board.put(05, 2);
+		board.put(06, 2);
+		
+		board.put(10, 2);
+		board.put(16, 2);
+		
+		board.put(50, 2);
+		board.put(56, 2);
+		
+		board.put(60, 2);
+		board.put(61, 2);
+		board.put(65, 2);
+		board.put(66, 2);
 		
 		board.put(20, 1);
 		board.put(30, 1);
@@ -76,6 +113,9 @@ public class SmallPegState extends State{
 
 		int d = 0;
 
+		int[] xmoves = {0,-1,1,0};
+		int[] ymoves = {1,0,0,-1};
+		
 		for (int x = 0; x < s; x++) {
 			for (int y = 0; y < s; y++) {
 				
@@ -201,6 +241,11 @@ public class SmallPegState extends State{
 	@Override
 	public String speak() {
 		return "pegs: " + p;
+	}
+	@Override
+	public String code() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

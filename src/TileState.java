@@ -181,4 +181,10 @@ public class TileState extends State{
 		return null;
 	}
 
+	@Override
+	public String code() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -3,90 +3,25 @@ import java.util.Arrays;
 
 public class PegState extends State{
 
-	int s = 7;
-	int p = 32;
+	int w = 7;
+	int h = 7;
+	int pegs = 32;
 	int[][] board;
 	
-	String code;
+	String code = "empty";
 	
 	int[] xmoves = {-1,0,1,0};
 	int[] ymoves = {0,1,0,-1};
 	
 	
 	String log = "";
-	
-	public void initA(){
-		s = 7;
-		p = 32;
-		board = new int[s][s];
-		for (int i = 0; i < s; i++){
-			for (int j = 0; j < s; j++){
-				board[i][j] = 1;
-				if (i <= 1 && j <= 1)board[i][j] = 2;
-				if (i <= 1 && j >= 5)board[i][j] = 2;
-				if (i >= 5 && j >= 5)board[i][j] = 2;
-				if (i >= 5 && j <= 1)board[i][j] = 2;
-			}
-		}
-		board[3][3] = 0;
-	}
-	
-	public void initB(){
-		s = 7;
-		p = 36;
-		board = new int[s][s];
-		for (int i = 0; i < s; i++){
-			for (int j = 0; j < s; j++){
-				board[i][j] = 1;
-				if (i <= 1 && j <= 1)board[i][j] = 2;
-				if (i <= 1 && j >= 5)board[i][j] = 2;
-				if (i >= 5 && j >= 5)board[i][j] = 2;
-				if (i >= 5 && j <= 1)board[i][j] = 2;
-			}
-		}
-		board[1][1] = 1;
-		board[5][5] = 1;
-		board[1][5] = 1;
-		board[5][1] = 1;
-		board[2][3] = 0;
-	}
-
-	public void initC(){
-		s = 7;
-		p = 14;
-		board = new int[s][s];
-		for (int i = 0; i < s; i++){
-			for (int j = 0; j < s; j++){
-				board[i][j] = 0;
-				if (i <= 1 && j <= 1)board[i][j] = 2;
-				if (i <= 1 && j >= 5)board[i][j] = 2;
-				if (i >= 5 && j >= 5)board[i][j] = 2;
-				if (i >= 5 && j <= 1)board[i][j] = 2;
-			}
-		}
-		board[2][0] = 1;
-		board[3][0] = 1;
-		board[4][0] = 1;
-		board[2][1] = 1;
-		board[3][1] = 1;
-		board[3][2] = 1;
-		board[4][3] = 1;
-		board[2][4] = 1;
-		board[3][4] = 1;
-		board[4][4] = 1;
-		board[5][4] = 1;
-		board[6][4] = 1;
-		board[1][5] = 1;
-		board[5][5] = 1;
-		
-	}
 
 	public PegState(int depth, int distance) {
 		super(depth, distance);
-		s = 7;
-		p = 32;
-		board = new int[s][s];
-		totalCost = p;
+		w = h = 7;
+		pegs = 32;
+		board = new int[w][h];
+		totalCost = pegs;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -96,7 +31,7 @@ public class PegState extends State{
 	
 	@Override
 	public int difference(State other) {
-		return ((PegState) other).p - this.p;
+		return ((PegState) other).pegs - this.pegs;
 	}
 
 	
@@ -107,8 +42,8 @@ public class PegState extends State{
 
 		int d = 0;
 
-		for (int x = 0; x < s; x++) {
-			for (int y = 0; y < s; y++) {
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
 				
 				if (board[x][y] != 1)continue;
 				
@@ -117,16 +52,16 @@ public class PegState extends State{
 					int xtarget = x + (2 * xmoves[i]);
 					int ytarget = y + (2 * ymoves[i]);
 					
-					if (xtarget < 0 || xtarget >= s)continue;
-					if (ytarget < 0 || ytarget >= s)continue;
+					if (xtarget < 0 || xtarget >= w)continue;
+					if (ytarget < 0 || ytarget >= h)continue;
 					
 					int xhopped = x + xmoves[i];
 					int yhopped = y + ymoves[i];
 					
 					if (board[xtarget][ytarget] == 0 && board[xhopped][yhopped] == 1){
 						PegState ns = new PegState(this.depth+1, d++);
-						for(int a=0; a<s; a++){
-							for(int b=0; b<s; b++){
+						for(int a=0; a<w; a++){
+							for(int b=0; b<h; b++){
 								ns.board[a][b]=board[a][b];
 							}
 						}
@@ -136,9 +71,7 @@ public class PegState extends State{
 						ns.board[xhopped][yhopped] = 0;
 						
 						ns.history = ("Move: " + x + "," + y + " to " + xtarget + "," + ytarget);
-						ns.p = p-1;
-						ns.codify();
-						
+						ns.pegs = pegs-1;			
 						out.add(ns);
 					}
 
@@ -150,33 +83,37 @@ public class PegState extends State{
 		
 		return out;
 	}
-
-	public void codify(){
+	
+	@Override
+	public String code(){
+		
+		if (code != "empty")return code;
+		
 		String[] codes = {"","","","","","","",""};
 		
-		for (int x = 0; x < s; x++){
-			for (int y = 0; y < s; y++){
+		for (int x = 0; x < w; x++){
+			for (int y = 0; y < h; y++){
 				codes[0] += board[x][y];
 				codes[1] += board[y][x];
 			}
 		}
 		
-		for (int x = s-1; x >= 0; x--){
-			for (int y = 0; y < s; y++){
+		for (int x = w-1; x >= 0; x--){
+			for (int y = 0; y < h; y++){
 				codes[2] += board[x][y];
 				codes[3] += board[y][x];
 			}
 		}
 		
-		for (int x = 0; x < s; x++){
-			for (int y = s-1; y >= 0; y--){
+		for (int x = 0; x < w; x++){
+			for (int y = h-1; y >= 0; y--){
 				codes[4] += board[x][y];
 				codes[5] += board[y][x];
 			}
 		}
 		
-		for (int x = s-1; x >= 0; x--){
-			for (int y = s-1; y >= 0; y--){
+		for (int x = w-1; x >= 0; x--){
+			for (int y = h-1; y >= 0; y--){
 				codes[6] += board[x][y];
 				codes[7] += board[y][x];
 			}
@@ -184,18 +121,16 @@ public class PegState extends State{
 		
 		Arrays.sort(codes);
 		code = codes[0];
-		
+		return code;
 	}
 	
 	
 	@Override
 	public boolean equals(Object other) {
-		
-		PegState p = (PegState) other;
-		p.codify();
-		codify();
-		
-		return code.equals(p.code);
+		PegState o = (PegState) other;
+		if (o.pegs != this.pegs)return false;
+		//return o.codify().equals(this.codify());
+		return Arrays.deepEquals(o.board, this.board);
 	}
 
 	@Override
@@ -209,8 +144,8 @@ public class PegState extends State{
 	public String toString() {
 		String out = "";
 		
-		for (int i = 0; i < s; i++){
-			for (int j = 0; j < s; j++){
+		for (int i = 0; i < w; i++){
+			for (int j = 0; j < h; j++){
 				
 				
 				switch (board[i][j]) {
@@ -221,21 +156,30 @@ public class PegState extends State{
 			}
 			out += "\n";
 		}
-		out += "Pegs  left:" + this.p + "    Depth: " + this.depth + "\n";
+		out += "Pegs  left:" + this.pegs + "    Depth: " + this.depth + "\n";
 		out += this.log;
 		return out;
 	}
 
 	@Override
 	public boolean isWinning() {
-		return (p == 1);
+		return (pegs == 1);
 	}
 
 	@Override
 	public String speak() {
-		return "pegs: " + p;
+		return "pegs: " + pegs;
 	}
-	
-	
+
+	public void setBoard(int[][] board) {
+		this.board = board;
+		this.w = board[1].length;
+		pegs = 0;
+		for (int i = 0; i < w; i++){
+			for (int j = 0; j < h; j++){
+				if(board[i][j] == 1)pegs++;
+			}
+		}
+	}
 
 }

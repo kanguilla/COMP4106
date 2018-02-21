@@ -43,4 +43,9 @@ public class BFSExecutor<T extends State> extends Executor<T> {
 	public void clearNodes() {
 		nodeList.clear();
 	}
+
+	@Override
+	public int numNodes() {
+		return nodeList.size();
+	}
 }

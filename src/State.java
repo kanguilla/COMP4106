@@ -24,4 +24,6 @@ public abstract class State {
 	public abstract boolean isWinning();
 
 	public abstract String speak();
+	
+	public abstract String code();
 }

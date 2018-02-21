@@ -142,4 +142,10 @@ public class BridgeState extends State{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public String code() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

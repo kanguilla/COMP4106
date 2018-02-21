@@ -120,8 +120,8 @@ class KeepTogether extends Heuristic<PegState> {
 	@Override
 	public int eval(PegState current, PegState other, PegState goal) {
 		int score = 0;
-		for (int x = 0; x < current.s; x++) {
-			for (int y = 0; y < current.s; y++) {
+		for (int x = 0; x < current.w; x++) {
+			for (int y = 0; y < current.h; y++) {
 				if (current.board[x][y] == 1) {
 					if (x > 0 && current.board[x-1][y] == 1) score--;
 					if (x < 6 && current.board[x+1][y] == 1) score--;
@@ -145,8 +145,8 @@ class Central extends Heuristic<PegState> {
 	@Override
 	public int eval(PegState current, PegState other, PegState goal) {
 		int score = 0;
-		for (int x = 0; x < current.s; x++) {
-			for (int y = 0; y < current.s; y++) {
+		for (int x = 0; x < current.w; x++) {
+			for (int y = 0; y < current.h; y++) {
 				if (current.board[x][y] == 1) {
 					score = score + (Math.abs(x-3) + Math.abs(y-3))^3;
 				}
