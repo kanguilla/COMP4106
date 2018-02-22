@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,13 +21,24 @@ public abstract class Executor<T extends State> {
 	
 	private int desiredSolutions = Integer.MAX_VALUE;
 	private int maxExamine = Integer.MAX_VALUE;
+	private int startOver = Integer.MAX_VALUE;
 	private int maxDifference = Integer.MAX_VALUE;
+	private int maxDepth = Integer.MAX_VALUE;
 	private int maxRelax = 0;
 	private int relaxCount = 0;
 	private Integer findCost;
 	private Scanner s = new Scanner(System.in);
 	public boolean forget, slow, verbose = false;
 	private int interval = 1;
+	
+	
+	protected void setStartOver(int i){
+		startOver = i;
+	}
+	
+	protected void setMaxDepth(int i){
+		maxDepth = i;
+	}
 	
 	protected void setRelax(int i){
 		maxRelax = i;
@@ -86,31 +98,32 @@ public abstract class Executor<T extends State> {
 		long l = System.currentTimeMillis();
 		Node<T> root = new Node<T>(base, null);
 		nodeAdd(root);
-		int optimal = Integer.MAX_VALUE;
 		Node<T> end = null;	
 		
 		int c = 0;
 		int v = 0;
 		int solutions = 0;
+
 		
-		while (!nodesEmpty() && c < maxExamine){
-			Node<T> n = selectNode();
-			T data = n.data;
-			c++;
-			if(verbose){
-				if (c%interval == 0){
-					System.out.println(
-							"\nExamined:" + c +
-							"\nNodes in list: " + numNodes() + 
-							"\nNode depth: " + data.depth + 
-							"\nKnown unique states: " + record.size() + 
-							"\nSkipped states: " + v);
-					System.out.println(data.toString());
-					if(slow){s.nextLine();		
-					
-					}
-				}
+		while (!nodesEmpty()){
+			
+			if (c == startOver){
+				System.out.println("RESETTING");
+				reset();
+				nodeAdd(new Node<T>(base, null));
+				//record.clear();
+				c = 0;
+				solutions = 0;
 			}
+			
+			Node<T> n = selectNode();
+			
+			T data = n.data;
+			
+			ArrayList<State> moves = data.expand();
+			
+			c++;
+			
 			
 			if (data.isWinning()){
 				
@@ -121,27 +134,48 @@ public abstract class Executor<T extends State> {
 					break;
 				}
 				
-				if (data.totalCost < optimal){
-					optimal = data.totalCost;
-					end = n;
-				}
-				if (findCost != null && optimal == findCost){
-					break;
-				}
-				
 			}
-			for (State s : data.expand()){
-				if (!forget && record.contains(data.code())){
+
+			int u= 0;
+			for (State s : moves){
+
+				if (record.contains(data.code())){
 					v++;
-					
 					continue;
-				}else{
-					Node<T> child = new Node<T>((T) s, n);
-					handleChild(child);
+				}
+			
+//				if (s.expand().size() == 0 && !s.isWinning()){
+//					v++;
+//					continue;
+//				}
+				Node<T> child = new Node<T>((T) s, n);
+				handleChild(child);
+				u++;
+			}
+			if(verbose || u == 0){
+				if (c%interval == 0){
+					System.out.println(u + " children added");
+				}
+			}
+			record.add(data.code());
+			
+			if(verbose || u == 0){
+				if (c%interval == 0){
+					System.out.println(
+							"\n------------------------" +
+							"\nExamined:" + c +
+							"\nNodes in list: " + numNodes() + 
+							"\nNode depth: " + data.depth + 
+							"\nKnown unique states: " + record.size() + 
+							"\nSkipped states: " + v + 
+							"\nCurrent possible moves: " + moves.size());
+					System.out.println(data.toString());
+					if(slow){s.nextLine();		
+					
+					}
 				}
 			}
 			
-			record.add(data.code());
 		}
 	
 		

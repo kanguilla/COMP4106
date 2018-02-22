@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class PegState extends State{
 
@@ -7,12 +9,16 @@ public class PegState extends State{
 	int h = 7;
 	int pegs = 32;
 	int[][] board;
+	int lastMove = 0;
 	
 	String code = "empty";
+			
+	int[][] m = {{0,1},
+			{1,0},
+			{-1,0}, 
+			{0,-1}};
 	
-	int[] xmoves = {-1,0,1,0};
-	int[] ymoves = {0,-1,0,1};
-	
+	List<int[]> moves = Arrays.asList(m);
 	
 	String log = "";
 
@@ -38,48 +44,51 @@ public class PegState extends State{
 	
 	@Override
 	public ArrayList<State> expand() {
+		
+		Collections.shuffle(moves);
+		
 		ArrayList<State> out = new ArrayList<State>();
-
+		
 		int d = 0;
 		
-		for (int k = PegLayouts.orderR.length -1; k >= 0; k--){
-			int x = PegLayouts.orderR[k][0];
-			int y = PegLayouts.orderR[k][1];
+		for (int y = h-1; y > -1; y--) {
+			for (int x = w-1; x > -1; x--) {
 
-				if (board[x][y] != 1)continue;
-				
-				for (int i = 0; i < xmoves.length; i++) {
-					
-					int xtarget = x + (2 * xmoves[i]);
-					int ytarget = y + (2 * ymoves[i]);
-					
-					if (xtarget < 0 || xtarget >= w)continue;
-					if (ytarget < 0 || ytarget >= h)continue;
-					
-					int xhopped = x + xmoves[i];
-					int yhopped = y + ymoves[i];
-					
-					if (board[xtarget][ytarget] == 0 && board[xhopped][yhopped] == 1){
-						PegState ns = new PegState(this.depth+1, d++);
-						
+				if (board[x][y] != 1)
+					continue;
+				for (int i = 0; i < moves.size(); i++) {
+					int xtarget = x + (2 * moves.get(i)[0]);
+					int ytarget = y + (2 * moves.get(i)[1]);
+
+					if (xtarget < 0 || xtarget >= w)
+						continue;
+					if (ytarget < 0 || ytarget >= h)
+						continue;
+
+					int xhopped = x + moves.get(i)[0];
+					int yhopped = y + moves.get(i)[1];
+
+					if (board[xtarget][ytarget] == 0 && board[xhopped][yhopped] == 1) {
+						PegState ns = new PegState(this.depth + 1, d++);
+
 						for (int a = 0; a < board.length; a++) {
-						    System.arraycopy(board[a], 0, ns.board[a], 0, board[0].length);
+							System.arraycopy(board[a], 0, ns.board[a], 0, board[0].length);
 						}
-						
+
 						ns.board[xtarget][ytarget] = 1;
 						ns.board[x][y] = 0;
 						ns.board[xhopped][yhopped] = 0;
-						
+
 						ns.history = ("Move: " + x + "," + y + " to " + xtarget + "," + ytarget);
-						ns.pegs = pegs-1;			
+						ns.pegs = pegs - 1;
 						out.add(ns);
 					}
 
 				}
-			
+				lastMove = (lastMove + 1) % 4;
 			}
-			
-		
+		}
+
 		return out;
 	}
 	
@@ -87,7 +96,6 @@ public class PegState extends State{
 	public String code(){
 		
 		if (code != "empty")return code;
-		
 		String[] codes = {"","","","","","","",""};
 		
 		for (int x = 0; x < w; x++){
@@ -128,8 +136,8 @@ public class PegState extends State{
 	public boolean equals(Object other) {
 		PegState o = (PegState) other;
 		if (o.pegs != this.pegs)return false;
-		//return o.codify().equals(this.codify());
-		return Arrays.deepEquals(o.board, this.board);
+		return o.code().equals(this.code());
+		//return Arrays.deepEquals(o.board, this.board);
 	}
 
 	@Override
@@ -162,7 +170,16 @@ public class PegState extends State{
 
 	@Override
 	public boolean isWinning() {
+		
+		if (Arrays.deepEquals(this.board, PegLayouts.euroReduced)){
+			return true;
+		}
+		
+		
 		return (pegs == 1);
+		
+		
+		
 	}
 
 	@Override

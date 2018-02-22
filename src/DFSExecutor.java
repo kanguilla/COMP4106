@@ -17,7 +17,7 @@ public class DFSExecutor<T extends State> extends Executor<T> {
 	
 	@Override
 	public void handleChild(Node<T> child){
-		nodeList.addFirst(child);
+		nodeList.push(child);
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class DFSExecutor<T extends State> extends Executor<T> {
 
 	@Override
 	public void nodeAdd(Node<T> n) {
-		nodeList.addFirst(n);
+		nodeList.push(n);
 	}
 
 	@Override
