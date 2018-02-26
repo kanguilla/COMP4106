@@ -14,12 +14,14 @@ public class Astar<T extends State> extends Executor<T> {
 			}
 			
 			double avg1 = 0;
+			
 			for (Heuristic<T> h : heuristics){
 				avg1 = avg1 + h.eval(s1.data, s2.data, goal);
 			}
 			avg1 = avg1/heuristics.size();
 			
 			double avg2 = 0;
+			
 			for (Heuristic<T> h : heuristics){
 				avg2 = avg2 + h.eval(s2.data, s1.data, goal);
 			}
@@ -87,6 +89,13 @@ public class Astar<T extends State> extends Executor<T> {
 	@Override
 	public int numNodes() {
 		return nodeList.size();
+	}
+
+	@Override
+	public void explain(T s) {
+		for (Heuristic<T> h : heuristics){
+			System.out.println("H-VAL: " + h.eval(s, null, goal));
+		}
 	}
 }
 

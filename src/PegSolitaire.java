@@ -5,14 +5,14 @@ public class PegSolitaire {
 		
 		Astar<PegState> ex = new Astar<PegState>();
 		//ex.addHeuristic(new Central());
-		//ex.addHeuristic(new KeepTogether());
+		//ex.addHeuristic(new AvoidIsolated());
+		ex.addHeuristic(new ClearEdges());
 		
 		PegState base = new PegState(0, 0);
-		base.log("Initiated");
 		
-		base.setBoard(PegLayouts.english);
+		base.setBoard(PegLayouts.euro);
 		
-		ex.verbose(10000);
+		ex.verbose(100);
 		//ex.slow();
 		ex.setBase(base);
 		ex.setSolutionCount(1);

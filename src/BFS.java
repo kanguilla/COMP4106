@@ -48,4 +48,9 @@ public class BFS<T extends State> extends Executor<T> {
 	public int numNodes() {
 		return nodeList.size();
 	}
+
+	@Override
+	public void explain(State n) {
+		
+	}
 }

@@ -15,6 +15,7 @@ public abstract class Executor<T extends State> {
 	public abstract void reset();
 	public abstract void clearNodes();
 	public abstract int numNodes();
+	public abstract void explain(T s);
 	
 	protected T goal, base;
 	private HashSet<String> record = new HashSet<String>();
@@ -170,6 +171,7 @@ public abstract class Executor<T extends State> {
 							"\nSkipped states: " + v + 
 							"\nCurrent possible moves: " + moves.size());
 					System.out.println(data.toString());
+					explain(data);
 					if(slow){s.nextLine();		
 					
 					}

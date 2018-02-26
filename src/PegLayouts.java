@@ -1,6 +1,16 @@
-import java.util.Collections;
+
 
 public class PegLayouts {
+	
+	public static byte[][] extended = {
+			{2,2,1,1,1,2,2,2},
+			{2,2,1,1,1,2,2,2},
+			{2,2,1,1,1,2,2,2},
+			{1,1,1,1,1,1,1,1},
+			{1,1,1,0,1,1,1,1},
+			{1,1,1,1,1,1,1,1},
+			{2,2,1,1,1,2,2,2},
+			{2,2,1,1,1,2,2,2}};
 	
 	public static byte[][] english = {
 			{2,2,1,1,1,2,2},

@@ -50,5 +50,10 @@ public class DFS<T extends State> extends Executor<T> {
 		return nodeList.size();
 	}
 
+	@Override
+	public void explain(State n) {
+		
+	}
+
 	
 }

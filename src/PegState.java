@@ -20,6 +20,16 @@ public class PegState extends State{
 		totalCost = pegs;
 		// TODO Auto-generated constructor stub
 	}
+	
+	public PegState(int depth, int distance, byte w, byte h) {
+		super(depth, distance);
+		this.w = w;
+		this.h = h;
+		pegs = 32;
+		board = new byte[w][h];
+		totalCost = pegs;
+		// TODO Auto-generated constructor stub
+	}
 
 	public void log(String change){
 		this.log = change;
@@ -62,7 +72,7 @@ public class PegState extends State{
 					int yhopped = y + moves[i][1];
 
 					if (board[xtarget][ytarget] == 0 && board[xhopped][yhopped] == 1) {
-						PegState ns = new PegState(this.depth + 1, d++);
+						PegState ns = new PegState(this.depth + 1, d++, this.w, this.h);
 
 						for (int a = 0; a < board.length; a++) {
 							System.arraycopy(board[a], 0, ns.board[a], 0, board[0].length);
