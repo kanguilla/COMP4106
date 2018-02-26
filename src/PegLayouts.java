@@ -2,7 +2,7 @@ import java.util.Collections;
 
 public class PegLayouts {
 	
-	public static int[][] english = {
+	public static byte[][] english = {
 			{2,2,1,1,1,2,2},
 			{2,2,1,1,1,2,2},
 			{1,1,1,1,1,1,1},
@@ -11,7 +11,7 @@ public class PegLayouts {
 			{2,2,1,1,1,2,2},
 			{2,2,1,1,1,2,2}};
 	
-	public static int[][] euro = {
+	public static byte[][] euro = {
 			{2,2,1,1,1,2,2},
 			{2,1,1,1,1,1,2},
 			{1,1,1,0,1,1,1},
@@ -20,7 +20,7 @@ public class PegLayouts {
 			{2,1,1,1,1,1,2},
 			{2,2,1,1,1,2,2}};
 	
-	public static int[][] euroReduced = {
+	public static byte[][] euroReduced = {
 			{2,2,0,0,0,2,2},
 			{2,0,0,0,0,1,2},
 			{1,1,0,0,1,0,0},
@@ -29,7 +29,7 @@ public class PegLayouts {
 			{2,0,0,0,1,1,2},
 			{2,2,0,0,1,2,2}};
 	
-	public static int[][] easy = {
+	public static byte[][] easy = {
 			{2,2,0,1,0,2,2},
 			{2,0,0,0,1,1,2},
 			{0,0,1,0,0,1,0},
@@ -38,7 +38,7 @@ public class PegLayouts {
 			{2,0,0,0,0,0,2},
 			{2,2,0,0,0,2,2}};
 	
-	public static int[][] mid = {
+	public static byte[][] mid = {
 			{2,2,1,0,0,2,2},
 			{2,1,1,0,0,1,2},
 			{1,0,0,1,1,1,1},
@@ -47,7 +47,7 @@ public class PegLayouts {
 			{2,1,1,1,1,1,2},
 			{2,2,1,1,1,2,2}};
 	
-	public static int[][] test1 = {
+	public static byte[][] test1 = {
 			{2,2,1,0,1,2,2},
 			{2,1,1,0,1,1,2},
 			{1,1,1,0,1,1,1},
@@ -56,7 +56,7 @@ public class PegLayouts {
 			{2,1,1,1,1,1,2},
 			{2,2,1,1,1,2,2}};
 	
-	public static int[][] test2 = {
+	public static byte[][] test2 = {
 			{2,2,1,1,1,2,2},
 			{2,1,1,1,1,1,2},
 			{1,1,1,1,1,0,1},
@@ -65,7 +65,7 @@ public class PegLayouts {
 			{2,1,1,0,1,1,2},
 			{2,2,1,0,1,2,2}};
 
-	public static int[][] orderR = {
+	public static byte[][] orderR = {
 			{0,0},
 			{0,1},
 			{0,2},

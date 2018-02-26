@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-public class AstarExecutor<T extends State> extends Executor<T> {
+public class Astar<T extends State> extends Executor<T> {
 	
 	private ArrayList<Heuristic<T>> heuristics = new ArrayList<Heuristic<T>>();
 	

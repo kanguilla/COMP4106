@@ -2,6 +2,8 @@
 public class Test {
 
 	public static void main(String[] args) {
+		System.out.println(Runtime.getRuntime().availableProcessors());
+		
 		PegState state = new PegState(0, 0);	
 		state.board = PegLayouts.test2;
 		

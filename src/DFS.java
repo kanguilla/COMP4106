@@ -1,8 +1,9 @@
 import java.util.ArrayDeque;
+import java.util.Deque;
 
-public class BFSExecutor<T extends State> extends Executor<T> {
+public class DFS<T extends State> extends Executor<T> {
 	
-	ArrayDeque<Node<T>> nodeList = new ArrayDeque<Node<T>>();
+	Deque<Node<T>> nodeList = new ArrayDeque<Node<T>>();
 	
 	@Override
 	public Node<T> selectNode() {
@@ -16,29 +17,29 @@ public class BFSExecutor<T extends State> extends Executor<T> {
 	
 	@Override
 	public void handleChild(Node<T> child){
-		nodeList.addLast(child);
+		nodeList.push(child);
 	}
 
 	@Override
 	public String introduce() {
-		return "Breadth-First Search";
+		return "Depth-First Search";
 	}
-	
+
 	@Override
 	public void nodeAdd(Node<T> n) {
-		nodeList.add(n);
+		nodeList.push(n);
 	}
 
 	@Override
 	public boolean nodesEmpty() {
 		return nodeList.isEmpty();
 	}
-	
+
 	@Override
 	public void reset() {
 		nodeList = new ArrayDeque<Node<T>>();
 	}
-
+	
 	@Override
 	public void clearNodes() {
 		nodeList.clear();
@@ -48,4 +49,6 @@ public class BFSExecutor<T extends State> extends Executor<T> {
 	public int numNodes() {
 		return nodeList.size();
 	}
+
+	
 }

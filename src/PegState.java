@@ -1,32 +1,22 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class PegState extends State{
 
-	int w = 7;
-	int h = 7;
-	int pegs = 32;
-	int[][] board;
+	
+	byte w = 7;
+	byte h = 7;
+	byte pegs = 32;
+	byte[][] board;
 	int lastMove = 0;
-	
 	String code = "empty";
-			
-	int[][] m = {{0,1},
-			{1,0},
-			{-1,0}, 
-			{0,-1}};
-	
-	List<int[]> moves = Arrays.asList(m);
-	
 	String log = "";
 
 	public PegState(int depth, int distance) {
 		super(depth, distance);
 		w = h = 7;
 		pegs = 32;
-		board = new int[w][h];
+		board = new byte[w][h];
 		totalCost = pegs;
 		// TODO Auto-generated constructor stub
 	}
@@ -45,7 +35,10 @@ public class PegState extends State{
 	@Override
 	public ArrayList<State> expand() {
 		
-		Collections.shuffle(moves);
+		int[][] moves = {{0,1},
+				{1,0},
+				{-1,0}, 
+				{0,-1}};
 		
 		ArrayList<State> out = new ArrayList<State>();
 		
@@ -56,17 +49,17 @@ public class PegState extends State{
 
 				if (board[x][y] != 1)
 					continue;
-				for (int i = 0; i < moves.size(); i++) {
-					int xtarget = x + (2 * moves.get(i)[0]);
-					int ytarget = y + (2 * moves.get(i)[1]);
+				for (int i = 0; i < moves.length; i++) {
+					int xtarget = x + (2 * moves[i][0]);
+					int ytarget = y + (2 * moves[i][1]);
 
 					if (xtarget < 0 || xtarget >= w)
 						continue;
 					if (ytarget < 0 || ytarget >= h)
 						continue;
 
-					int xhopped = x + moves.get(i)[0];
-					int yhopped = y + moves.get(i)[1];
+					int xhopped = x + moves[i][0];
+					int yhopped = y + moves[i][1];
 
 					if (board[xtarget][ytarget] == 0 && board[xhopped][yhopped] == 1) {
 						PegState ns = new PegState(this.depth + 1, d++);
@@ -78,9 +71,10 @@ public class PegState extends State{
 						ns.board[xtarget][ytarget] = 1;
 						ns.board[x][y] = 0;
 						ns.board[xhopped][yhopped] = 0;
-
+						
 						ns.history = ("Move: " + x + "," + y + " to " + xtarget + "," + ytarget);
-						ns.pegs = pegs - 1;
+						ns.pegs = (byte) (pegs - 1);
+						ns.totalCost = ns.pegs;
 						out.add(ns);
 					}
 
@@ -171,11 +165,6 @@ public class PegState extends State{
 	@Override
 	public boolean isWinning() {
 		
-		if (Arrays.deepEquals(this.board, PegLayouts.euroReduced)){
-			return true;
-		}
-		
-		
 		return (pegs == 1);
 		
 		
@@ -187,10 +176,10 @@ public class PegState extends State{
 		return "pegs: " + pegs;
 	}
 
-	public void setBoard(int[][] board) {
+	public void setBoard(byte[][] board) {
 		this.board = board;
-		this.w = board[1].length;
-		this.h = board.length;
+		this.w = (byte) board[1].length;
+		this.h = (byte) board.length;
 		pegs = 0;
 		for (int i = 0; i < w; i++){
 			for (int j = 0; j < h; j++){

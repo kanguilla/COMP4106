@@ -152,14 +152,14 @@ public abstract class Executor<T extends State> {
 				handleChild(child);
 				u++;
 			}
-			if(verbose || u == 0){
+			if(verbose){
 				if (c%interval == 0){
 					System.out.println(u + " children added");
 				}
 			}
 			record.add(data.code());
 			
-			if(verbose || u == 0){
+			if(verbose){
 				if (c%interval == 0){
 					System.out.println(
 							"\n------------------------" +

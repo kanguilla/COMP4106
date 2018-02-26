@@ -2,7 +2,7 @@
 public class SpaceFinding {
 	public static void main (String[] args){
 		
-		AstarExecutor<TileState> ex = new AstarExecutor<TileState>();
+		Astar<TileState> ex = new Astar<TileState>();
 		ex.addHeuristic(new CountingHeuristic());
 		ex.addHeuristic(new VaultHeuristic());
 		

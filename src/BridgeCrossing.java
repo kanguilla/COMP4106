@@ -4,7 +4,7 @@ public class BridgeCrossing {
 		
 		
 		
-		Executor<BridgeState> ex = new DFSExecutor<BridgeState>();
+		Executor<BridgeState> ex = new DFS<BridgeState>();
 		//((AstarExecutor) ex).addHeuristic(new DistanceHeuristic());
 		
 		BridgeState base = new BridgeState(0, 0);
