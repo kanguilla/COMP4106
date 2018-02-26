@@ -168,7 +168,7 @@ public class SmallPegState extends State{
 	@Override
 	public boolean isWinning() {
 		
-		if (Arrays.deepEquals(this.board, PegLayouts.euroReduced)){
+		if (Arrays.deepEquals(this.board, Layouts.euroReduced)){
 			return true;
 		}
 		

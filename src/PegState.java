@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class PegState extends State{
 
-	
+	boolean triangle = false;
 	byte w = 7;
 	byte h = 7;
 	byte pegs = 32;
@@ -12,6 +12,11 @@ public class PegState extends State{
 	String code = "empty";
 	String log = "";
 
+	byte[][] moves = {{0,1},
+			{1,0},
+			{-1,0}, 
+			{0,-1}};
+	
 	public PegState(int depth, int distance) {
 		super(depth, distance);
 		w = h = 7;
@@ -35,6 +40,10 @@ public class PegState extends State{
 		this.log = change;
 	}
 	
+	public void setMoves(byte[][] moves) {
+		this.moves = moves;
+	}
+	
 	@Override
 	public int difference(State other) {
 		return ((PegState) other).pegs - this.pegs;
@@ -45,10 +54,7 @@ public class PegState extends State{
 	@Override
 	public ArrayList<State> expand() {
 		
-		int[][] moves = {{0,1},
-				{1,0},
-				{-1,0}, 
-				{0,-1}};
+		
 		
 		ArrayList<State> out = new ArrayList<State>();
 		
@@ -73,7 +79,8 @@ public class PegState extends State{
 
 					if (board[xtarget][ytarget] == 0 && board[xhopped][yhopped] == 1) {
 						PegState ns = new PegState(this.depth + 1, d++, this.w, this.h);
-
+						ns.triangle = triangle;
+						ns.moves = moves;
 						for (int a = 0; a < board.length; a++) {
 							System.arraycopy(board[a], 0, ns.board[a], 0, board[0].length);
 						}
@@ -154,31 +161,58 @@ public class PegState extends State{
 	@Override
 	public String toString() {
 		String out = "";
-		
-		for (int i = 0; i < w; i++){
-			for (int j = 0; j < h; j++){
-				
-				
-				switch (board[i][j]) {
-				case 2: out += "- "; break;
-				case 1: out += "O "; break;
-				case 0: out += "  "; break;
+
+		if(!triangle) {
+			for (int i = 0; i < w; i++){
+				for (int j = 0; j < h; j++){
+					
+					
+					switch (board[i][j]) {
+					case 2: out += "- "; break;
+					case 1: out += "O "; break;
+					case 0: out += "  "; break;
+					}
 				}
+				out += "\n";
 			}
-			out += "\n";
+			out += "Pegs  left:" + this.pegs + "    Depth: " + this.depth + "\n";
+			out += this.log;
+			return out;
+		}else {
+			for (int i = 0; i < w; i++){
+				
+				int spaces = w-i;
+				for (int k = 0; k < spaces; k++) {
+					out += " ";
+				}
+				
+				for (int j = 0; j < h; j++){
+					
+					switch (board[i][j]) {
+					case 2: out += "- "; break;
+					case 1: out += "O "; break;
+					case 0: out += "  "; break;
+					}
+				}
+				
+				for (int k = 0; k < spaces; k++) {
+					out += " ";
+				}
+				
+				
+				out += "\n";
+			}
+			out += "Pegs  left:" + this.pegs + "    Depth: " + this.depth + "\n";
+			out += this.log;
+			return out;
 		}
-		out += "Pegs  left:" + this.pegs + "    Depth: " + this.depth + "\n";
-		out += this.log;
-		return out;
+		
 	}
+	
 
 	@Override
 	public boolean isWinning() {
-		
 		return (pegs == 1);
-		
-		
-		
 	}
 
 	@Override

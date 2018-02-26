@@ -1,6 +1,21 @@
 
 
-public class PegLayouts {
+public class Layouts {
+	
+	public static byte[][] triangleMoves = {
+			{1,1},
+			{-1,-1},
+			{0,1},
+			{0,-1},
+			{1,0},
+			{-1,0}};
+	
+	public static byte[][] triangle = {
+			{0,2,2,2,2},
+			{1,1,2,2,2},
+			{1,1,1,2,2},
+			{1,1,1,1,2},
+			{1,1,1,1,1}};
 	
 	public static byte[][] extended = {
 			{2,2,1,1,1,2,2,2},

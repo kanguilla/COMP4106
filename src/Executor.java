@@ -20,6 +20,7 @@ public abstract class Executor<T extends State> {
 	protected T goal, base;
 	private HashSet<String> record = new HashSet<String>();
 	
+	private boolean detailed = false;
 	private int desiredSolutions = Integer.MAX_VALUE;
 	private int maxExamine = Integer.MAX_VALUE;
 	private int startOver = Integer.MAX_VALUE;
@@ -129,7 +130,6 @@ public abstract class Executor<T extends State> {
 			if (data.isWinning()){
 				
 				solutions++;	
-				goal = data;
 				if (solutions >= desiredSolutions){
 					end = n;
 					break;
@@ -181,7 +181,7 @@ public abstract class Executor<T extends State> {
 		}
 	
 		
-		output(goal.toString());
+		if (end != null) output(end.data.toString());
 		output("");
 		output((end != null) ? "** COMPLETE **" : "** INCOMPLETE **");
 		output("Executor took "+(System.currentTimeMillis() - l)/1000f + " seconds.");
@@ -197,7 +197,9 @@ public abstract class Executor<T extends State> {
 			output("\nHISTORY");
 			ArrayList<String> history = new ArrayList<String>();
 			while (end != null){
+				if(detailed)history.add(end.data.toString());
 				history.add(end.data.history);
+				
 				end = end.parent;
 			}
 			for (int i = history.size()-1; i >= 0; i--){
@@ -210,6 +212,10 @@ public abstract class Executor<T extends State> {
 	
 	public void forgetful() {
 		forget = true;
+	}
+	
+	public void visualSolution() {
+		detailed = true;
 	}
 
 }
